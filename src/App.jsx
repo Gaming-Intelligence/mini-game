@@ -1,13 +1,29 @@
-import './App.css'
-import Home from './components/Home/Home'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './App.css';
+import Airdrop from './components/Airdrop/Airdrop';
+import Game from './components/Game/Game';
+import Home from './components/Home/Home';
+import FullScreenGame from './components/FullScreenGame/FullScreenGame';
+import Task from './components/Task/Task';
+import Upgrade from './components/Upgrade/Upgrade';
+import Layout from './components/Layout'; // Import the new Layout component
 
 function App() {
-
   return (
-    <>
-      <Home />
-    </>
-  )
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/airdrop" element={<Airdrop />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/upgrade" element={<Upgrade />} />
+          <Route path="/task" element={<Task />} />
+          <Route path="/full-screen-game" element={<FullScreenGame />} />
+        </Routes>
+      </Layout>
+    </Router>
+  );
 }
 
-export default App
+export default App;

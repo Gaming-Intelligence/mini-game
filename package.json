@@ -13,8 +13,11 @@
     "@tonconnect/ui-react": "^2.0.8",
     "@twa-dev/sdk": "^7.8.0",
     "firebase": "^10.12.5",
+    "lottie-web": "^5.12.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-lottie": "^1.2.4",
+    "react-router-dom": "^6.26.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
