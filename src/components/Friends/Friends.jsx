@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Task = () => {
+const Friends = () => {
   return (
     <div>
       {/* Top Navbar */}
@@ -28,13 +28,13 @@ const Task = () => {
         </NavLink>
       </nav>
 
-      {/* Task Page Content */}
+      {/* Friends Page Content */}
       <div className="p-4">
-        <h1 className="text-2xl font-bold">Task Page</h1>
-        {/* Add your Task page content here */}
+        <h1 className="text-2xl font-bold">Friends Page</h1>
+        {/* Add your Friends page content here */}
       </div>
     </div>
-  )
+  );
 }
 
-export default Task
+export default Friends;

@@ -13,7 +13,7 @@ import Upgrade from '../Upgrade/Upgrade';
 
 const Navbar = () => {
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-navy text-white flex justify-around items-center p-2 md:p-4 shadow-lg rounded-t-lg">
+    <div className="fixed bottom-0 left-0 w-full bg-navy text-white flex justify-around items-center p-2 md:p-4 shadow-lg rounded-t-lg mb-10">
       <Link
         to="/"
         className="flex flex-col items-center transition-transform duration-200 ease-in-out text-sm md:text-base px-4 py-2"
