@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 const Task = () => {
   return (
-    <div>
+    <div className='bg-white'>
       {/* Top Navbar */}
       <nav className="bg-white p-4 flex space-x-4">
         <NavLink 

@@ -9,29 +9,39 @@ import Lottie from "react-lottie";
 const db = getDatabase(app);
 
 const Home = () => {
-  const [count, setCount] = useState(0);
-  const [coins, setCoins] = useState(0);
-  const [name, setName] = useState("");
-  const [timer, setTimer] = useState(0);
-  const [isActive, setIsActive] = useState(false);
-  const [buttonText, setButtonText] = useState("Farming");
-  const [isCollecting, setIsCollecting] = useState(false);
+  const [count, setCount] = useState(() => parseInt(localStorage.getItem("count")) || 0);
+  const [coins, setCoins] = useState(() => parseInt(localStorage.getItem("coins")) || 0);
+  const [name, setName] = useState(() => localStorage.getItem("name") || "");
+  const [timer, setTimer] = useState(() => parseInt(localStorage.getItem("timer")) || 0);
+  const [isActive, setIsActive] = useState(() => JSON.parse(localStorage.getItem("isActive")) || false);
+  const [buttonText, setButtonText] = useState(() => localStorage.getItem("buttonText") || "Farming");
+  const [isCollecting, setIsCollecting] = useState(() => JSON.parse(localStorage.getItem("isCollecting")) || false);
+
+  useEffect(() => {
+    // Save to localStorage whenever these states change
+    localStorage.setItem("count", count);
+    localStorage.setItem("coins", coins);
+    localStorage.setItem("name", name);
+    localStorage.setItem("timer", timer);
+    localStorage.setItem("isActive", JSON.stringify(isActive));
+    localStorage.setItem("buttonText", buttonText);
+    localStorage.setItem("isCollecting", JSON.stringify(isCollecting));
+  }, [count, coins, name, timer, isActive, buttonText, isCollecting]);
 
   const putData = () => {
     const dbRef = ref(db, "users/sourav");
     get(dbRef).then((snapshot) => {
       if (snapshot.exists()) {
-        const previousCoins = snapshot.val().count || 0; // Fetch previous coins
-        const newTotalCoins = previousCoins + count; // Add previous coins to new coins
+        const previousCoins = snapshot.val().count || 0;
+        const newTotalCoins = previousCoins + count;
 
-        // Update the database with the new total coins
         set(dbRef, {
           id: 1,
           name: name,
           count: newTotalCoins,
         }).then(() => {
-          setCoins(newTotalCoins); // Update the coins state
-          fetchData(); // Re-fetch the data to ensure the latest value is displayed
+          setCoins(newTotalCoins);
+          fetchData();
         }).catch((error) => {
           console.error("Error updating Firebase:", error);
         });
@@ -46,8 +56,13 @@ const Home = () => {
     get(child(dbRef, `users/sourav`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          setCoins(snapshot.val().count);
-          setName(snapshot.val().name);
+          const fetchedCoins = snapshot.val().count;
+          const fetchedName = snapshot.val().name;
+          setCoins(fetchedCoins);
+          setName(fetchedName);
+          // Also save to localStorage
+          localStorage.setItem("coins", fetchedCoins);
+          localStorage.setItem("name", fetchedName);
         } else {
           console.log("No data available");
         }
@@ -90,16 +105,16 @@ const Home = () => {
 
   const handleButtonClick = () => {
     if (buttonText === "Farming") {
-      setTimer(5); // Reset timer to 5 seconds
+      setTimer(5); 
       setIsActive(true);
       setButtonText(formatTime(5));
-      setCount(14400); // Set initial count
+      setCount(14400); 
     } else if (buttonText === "Collect") {
-      putData(); // Call the putData function to send data to Firebase
-      setIsCollecting(true); // Start second timer
-      setButtonText(formatTime(5)); // Show countdown timer
-      setTimer(5); // Set second timer to 5 seconds
-      setIsActive(true); // Activate timer
+      putData();
+      setIsCollecting(true);
+      setButtonText(formatTime(5)); 
+      setTimer(5); 
+      setIsActive(true);
     }
   };
 
@@ -111,29 +126,15 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full h-full px-4 py-2">
-      {/* Header Section */}
+    <div className="w-full h-full px-4 py-2 bg-white">
       <div className="flex justify-between items-center mb-6">
-        {/* Profile Section */}
         <div className="flex items-center space-x-2 flex-1">
-          <img
-            src={profilePic}
-            alt="Profile"
-            className="w-10 h-10 rounded-full"
-          />
+          <img src={profilePic} alt="Profile" className="w-10 h-10 rounded-full" />
           <h1 className="text-l font-bold">{name}</h1>
         </div>
-
-        {/* Header Photo */}
         <div className="flex-1 flex justify-center">
-          <img
-            src={giPic}
-            alt="Header"
-            className="w-16 h-16 object-cover rounded-full shadow-md"
-          />
+          <img src={giPic} alt="Header" className="w-16 h-16 object-cover rounded-full shadow-md" />
         </div>
-
-        {/* About Button */}
         <div className="flex-1 flex justify-end">
           <button className="bg-navy text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-200">
             About
@@ -141,18 +142,15 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Coin Section */}
       <div className="text-center mb-6">
         <h2 className="text-xl font-semibold">GI Points</h2>
-        <p className="text-2xl font-bold text-gray-800">{coins}</p> {/* Display fetched count */}
+        <p className="text-2xl font-bold text-gray-800">{coins}</p> 
       </div>
 
-      {/* Lottie Animation Section */}
       <div className="flex justify-center mb-6">
         <Lottie options={defaultOptions} height={300} width={300} />
       </div>
 
-      {/* Full-Width Semi-Transparent Button with Timer */}
       <div className="w-full mb-6">
         <button
           onClick={handleButtonClick}
