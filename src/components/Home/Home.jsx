@@ -15,6 +15,7 @@ const Home = () => {
   const [timer, setTimer] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [buttonText, setButtonText] = useState("Farming");
+  const [isCollecting, setIsCollecting] = useState(false);
 
   const putData = () => {
     const dbRef = ref(db, "users/sourav");
@@ -22,7 +23,7 @@ const Home = () => {
       if (snapshot.exists()) {
         const previousCoins = snapshot.val().count || 0; // Fetch previous coins
         const newTotalCoins = previousCoins + count; // Add previous coins to new coins
-  
+
         // Update the database with the new total coins
         set(dbRef, {
           id: 1,
@@ -77,10 +78,15 @@ const Home = () => {
       }, 1000);
     } else if (timer === 0 && isActive) {
       setIsActive(false);
-      setButtonText("Collect");
+      if (isCollecting) {
+        setIsCollecting(false);
+        setButtonText("Farming");
+      } else {
+        setButtonText("Collect");
+      }
     }
     return () => clearInterval(interval);
-  }, [isActive, timer]);
+  }, [isActive, timer, isCollecting]);
 
   const handleButtonClick = () => {
     if (buttonText === "Farming") {
@@ -90,7 +96,10 @@ const Home = () => {
       setCount(14400); // Set initial count
     } else if (buttonText === "Collect") {
       putData(); // Call the putData function to send data to Firebase
-      setButtonText("Farming"); // Reset button text to "Farming"
+      setIsCollecting(true); // Start second timer
+      setButtonText(formatTime(5)); // Show countdown timer
+      setTimer(5); // Set second timer to 5 seconds
+      setIsActive(true); // Activate timer
     }
   };
 

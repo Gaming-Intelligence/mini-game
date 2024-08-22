@@ -12,8 +12,9 @@ import Friends from './components/Friends/Friends';
 
 function App() {
   return (
-    <div className="bg-white">
-      <Router>
+
+    <Router>
+      <div className="bg-white">
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -25,8 +26,9 @@ function App() {
             <Route path="/friends" element={<Friends />} />
           </Routes>
         </Layout>
-      </Router>
-    </div>
+      </div>
+    </Router>
+
   );
 }
 
