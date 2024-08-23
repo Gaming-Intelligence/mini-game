@@ -9,42 +9,23 @@ const FullScreenGame = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const handleNavigation = (event) => {
-            if (event.data.type === 'navigateToGame') {
-                const score = event.data.score; // Get the score from the event
-
-                // Fetch the current coins from Firebase
-                const dbRef = ref(db, 'users/sourav');
-                get(dbRef).then((snapshot) => {
-                    if (snapshot.exists()) {
-                        const previousCoins = snapshot.val().count || 0; // Fetch previous coins
-                        const newTotalCoins = previousCoins + score; // Add the score to the coins
-
-                        // Update the database with the new total coins
-                        set(dbRef, {
-                            id: 1,
-                            name: snapshot.val().name,
-                            count: newTotalCoins,
-                        }).then(() => {
-                            console.log('Coins updated successfully');
-                        }).catch((error) => {
-                            console.error("Error updating Firebase:", error);
-                        });
-                    } else {
-                        console.log("No data available");
+        const handleMessage = (event) => {
+            // Ensure the message is from your GitHub Pages domain
+            if (event.origin === 'https://gaming-intelligence.github.io') { // Replace with your actual GitHub Pages URL
+                if (event.data) {
+                    if (event.data.type === 'gameScore') {
+                        setScore(event.data.score); // Update the score in your React app
+                    } else if (event.data.type === 'gameOver') {
+                        navigate('/game'); // Navigate back to the home page when the game is over
                     }
-                }).catch((error) => {
-                    console.error("Error fetching data:", error);
-                });
-
-                navigate('/game'); // Navigate to the game page
+                }
             }
         };
 
-        window.addEventListener('message', handleNavigation);
+        window.addEventListener('message', handleMessage);
 
         return () => {
-            window.removeEventListener('message', handleNavigation);
+            window.removeEventListener('message', handleMessage);
         };
     }, [navigate]);
 
