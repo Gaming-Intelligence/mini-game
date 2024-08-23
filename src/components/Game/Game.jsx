@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Game = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [score, setScore] = useState(location.state?.score || 0);
 
     const startGame = () => {
         navigate('/full-screen-game'); // Navigate to the GameScreen page
@@ -17,6 +20,11 @@ const Game = () => {
             >
                 Start Game
             </button>
+            {score > 0 && (
+                <div className="score-display">
+                    <h2>Final Score: {score}</h2>
+                </div>
+            )}
         </div>
     );
 };
