@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: white !important;
+    color: black;
+  }
+  
+  * {
+    background-color: white !important;
+    color: black;
+  }
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    touch-action: manipulation; /* Prevent unwanted actions */
+    position: fixed; /* Keeps the body fixed in place */
+    width: 100%;
+}
+
+#root {
+    min-height: 100%;
+    position: relative;
+    overflow-y: auto; /* Allows vertical scrolling for content */
+}

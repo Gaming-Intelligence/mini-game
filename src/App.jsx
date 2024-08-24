@@ -14,7 +14,7 @@ function App() {
   return (
 
     <Router>
-      <div className="bg-white">
+      <div className="bg-white text-black min-h-screen">
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
