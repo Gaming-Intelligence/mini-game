@@ -1,3 +1,4 @@
+// GamePage.jsx
 import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import p5 from 'p5';
@@ -282,44 +283,28 @@ const FullScreenGame = () => {
                 p.text('Game Over', screen_width / 2, screen_height / 2 - 20);
                 p.textSize(24);
                 p.text(`Final Score: ${score}`, screen_width / 2, screen_height / 2 + 20);
-
-                // Add Collect Button
-                p.fill(0, 150);
-                p.rect(screen_width / 2 - 100, screen_height / 2 + 60, 200, 50);
-                p.fill(255);
-                p.textSize(20);
-                p.text('Collect', screen_width / 2, screen_height / 2 + 85);
             };
 
-            p.mousePressed = () => {
-                if (gameEnded) {
-                    navigate('/game', { state: { score } }); // Navigate back to Home with the score
-                } else {
-                    collectCoins();
-                }
+            p.touchStarted = () => {
+                collectCoins();
+            };
+
+            p.windowResized = () => {
+                screen_width = p.windowWidth;
+                screen_height = p.windowHeight;
+                p.resizeCanvas(screen_width, screen_height);
             };
         };
 
-        const myP5 = new p5(sketch, sketchRef.current);
-
-        // Register Service Worker
-        window.onload = () => {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then(function(registration) {
-                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                    }).catch(function(error) {
-                        console.log('ServiceWorker registration failed: ', error);
-                    });
-            }
-        };
-
+        const p5Instance = new p5(sketch, sketchRef.current);
         return () => {
-            myP5.remove();
+            p5Instance.remove();
         };
     }, [navigate]);
 
-    return <div ref={sketchRef}></div>;
+    return (
+        <div ref={sketchRef} style={{ width: '100%', height: '100%' }} />
+    );
 };
 
 export default FullScreenGame;
