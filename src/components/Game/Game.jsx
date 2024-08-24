@@ -44,6 +44,10 @@ const Game = () => {
         navigate('/full-screen-game'); // Navigate to the GameScreen page
     };
 
+    const handleFinishGame = () => {
+        updateScore(); // Update Firebase score
+    };
+
     return (
         <div className="p-4 md:p-8">
             <h1 className="text-xl md:text-3xl font-bold mb-4">Game Page</h1>
