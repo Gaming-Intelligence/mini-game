@@ -14,7 +14,7 @@ const Game = () => {
         // Fetch the current score from Firebase
         const fetchScore = async () => {
             try {
-                const scoreRef = ref(database, 'scores/user123'); // Update the path to your data
+                const scoreRef = ref(database, 'users/sourav/count'); // Update the path to your data
                 const snapshot = await get(scoreRef);
                 if (snapshot.exists()) {
                     setFirebaseScore(snapshot.val());
@@ -46,6 +46,7 @@ const Game = () => {
 
     const handleFinishGame = () => {
         updateScore(); // Update Firebase score
+        navigate('/home'); // Navigate back to home or any other page
     };
 
     return (
@@ -64,7 +65,7 @@ const Game = () => {
                         onClick={handleFinishGame}
                         className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition duration-200 mt-4"
                     >
-                        Finish Game
+                        Update Points
                     </button>
                 </div>
             )}
