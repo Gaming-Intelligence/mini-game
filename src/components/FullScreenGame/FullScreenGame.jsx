@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import p5 from 'p5';
 
 const FullScreenGame = () => {
     const sketchRef = useRef();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const sketch = (p) => {
@@ -296,17 +298,10 @@ const FullScreenGame = () => {
 
             const endGame = () => {
                 gameEnded = true;
-                coinsReleased = totalCoins;
-                fadeAmount = 0;
-
-                // Trigger fade out and navigation back to Home page
-                const fadeOutCallback = () => {
+                fadeOutEffect(() => {
                     p.noLoop();
-                    // Navigate to Home.jsx with the score
-                    navigateHome();
-                };
-
-                fadeOutEffect(fadeOutCallback);
+                    navigate('/game', { state: { score } }); // Navigate back to Home with the score
+                });
             };
 
             const showGameOverPopup = () => {
