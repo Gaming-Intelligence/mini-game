@@ -11,6 +11,21 @@ import Layout from './components/Layout';
 import Friends from './components/Friends/Friends';
 
 function App() {
+
+  useEffect(() => {
+    const element = document.documentElement;
+
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+    }
+  }, []);
+
   return (
 
     <Router>
