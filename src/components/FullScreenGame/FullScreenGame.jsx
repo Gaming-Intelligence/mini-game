@@ -1,3 +1,4 @@
+// GamePage.jsx
 import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import p5 from 'p5';
@@ -65,47 +66,40 @@ const FullScreenGame = () => {
 
                 p.image(backgroundImage, 0, 0, screen_width, screen_height);
 
-                particles.forEach((particle, i) => {
-                    particle.update();
-                    particle.draw();
-                    if (particle.isFinished()) {
-                        particles.splice(i, 1);
-                    }
-                });
-
                 if (isFrozen) {
+                    displayGame(); // Ensure displayGame is defined
                     if (p.millis() - freezeStart >= freezeTime) {
                         isFrozen = false;
                         lastCoinReleaseTime += p.millis() - freezeStart;
                     } else {
-                        return; // Skip the rest of the draw loop if frozen
+                        return;
                     }
-                }
-
-                let currentTime = p.millis();
-                if (coinsReleased < totalCoins && currentTime - lastCoinReleaseTime >= coinInterval) {
-                    let coinType = getNextCoinType();
-                    if (coinType) {
-                        let fallDuration = screen_height / 45;
-                        let speed = screen_height / fallDuration;
-                        coins.push(new Coin(coinType, speed));
-                        coinsReleased++;
-                        lastCoinReleaseTime = currentTime;
-                    }
-                }
-
-                coins.forEach((coin, i) => {
-                    coin.update();
-                    coin.draw();
-
-                    if (coin.collected || coin.y > screen_height + coin.radius) {
-                        coins.splice(i, 1);
-
-                        if (coinsReleased >= totalCoins && coins.length === 0) {
-                            endGame();
+                } else {
+                    let currentTime = p.millis();
+                    if (coinsReleased < totalCoins && currentTime - lastCoinReleaseTime >= coinInterval) {
+                        let coinType = getNextCoinType();
+                        if (coinType) {
+                            let fallDuration = screen_height / 45;
+                            let speed = screen_height / fallDuration;
+                            coins.push(new Coin(coinType, speed));
+                            coinsReleased++;
+                            lastCoinReleaseTime = currentTime;
                         }
                     }
-                });
+
+                    coins.forEach((coin, i) => {
+                        coin.update();
+                        coin.draw();
+
+                        if (coin.collected || coin.y > screen_height + coin.radius) {
+                            coins.splice(i, 1);
+
+                            if (coinsReleased >= totalCoins && coins.length === 0) {
+                                endGame();
+                            }
+                        }
+                    });
+                }
 
                 p.fill(255);
                 p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.02);
@@ -166,6 +160,17 @@ const FullScreenGame = () => {
             const triggerFreeze = () => {
                 isFrozen = true;
                 freezeStart = p.millis();
+            };
+
+            const displayGame = () => {
+                // Define what should be done when the game is frozen.
+                // You can use this to display a paused screen or any visual indicator.
+                p.fill(0, 122, 255, 150);
+                p.rect(0, 0, screen_width, screen_height);
+                p.fill(255);
+                p.textSize(32);
+                p.textAlign(p.CENTER, p.CENTER);
+                p.text('Game Paused', screen_width / 2, screen_height / 2);
             };
 
             class Coin {
@@ -260,7 +265,9 @@ const FullScreenGame = () => {
                         return type;
                     }
                 }
-                return null;
+                return
+
+                null;
             };
 
             const endGame = () => {
@@ -279,10 +286,15 @@ const FullScreenGame = () => {
                 p.textAlign(p.CENTER, p.CENTER);
                 p.textSize(32);
                 p.text('Game Over', screen_width / 2, screen_height / 2 - 20);
-                p.textSize
-
-(24);
+                p.textSize(24);
                 p.text(`Final Score: ${score}`, screen_width / 2, screen_height / 2 + 20);
+
+                // Add Collect Button
+                p.fill(0, 122, 255);
+                p.rect(screen_width / 2 - 75, screen_height / 2 + 60, 150, 40, 20);
+                p.fill(255);
+                p.textSize(18);
+                p.text('Collect', screen_width / 2, screen_height / 2 + 80);
             };
 
             p.touchStarted = () => {
