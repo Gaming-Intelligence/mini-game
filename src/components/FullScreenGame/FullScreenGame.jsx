@@ -5,6 +5,8 @@ import p5 from 'p5';
 const FullScreenGame = () => {
     const sketchRef = useRef();
     const navigate = useNavigate();
+    let prevTouchX = null;
+    let prevTouchY = null;
 
     useEffect(() => {
         const sketch = (p) => {
@@ -116,6 +118,17 @@ const FullScreenGame = () => {
                 } else if (fadingIn) {
                     fadeInEffect();
                 }
+
+                // Swipe-based coin collection
+                if (prevTouchX !== null && prevTouchY !== null) {
+                    collectCoinsAlongSwipe(prevTouchX, prevTouchY, p.touches[0].x, p.touches[0].y);
+                }
+
+                // Update previous touch coordinates
+                if (p.touches.length > 0) {
+                    prevTouchX = p.touches[0].x;
+                    prevTouchY = p.touches[0].y;
+                }
             };
 
             const fadeInEffect = () => {
@@ -162,6 +175,36 @@ const FullScreenGame = () => {
                         }
                     }
                 }
+            };
+
+            const collectCoinsAlongSwipe = (x1, y1, x2, y2) => {
+                for (let i = coins.length - 1; i >= 0; i--) {
+                    if (isCoinCollectedAlongSwipe(coins[i], x1, y1, x2, y2)) {
+                        if (coins[i].coinType === "new") {
+                            score = Math.floor(score * 0.5);
+                        } else {
+                            score += coins[i].value;
+                        }
+
+                        if (coins[i].coinType === "bronze") {
+                            triggerFreeze();
+                        }
+
+                        createParticles(coins[i].x, coins[i].y);
+                        coins.splice(i, 1);
+
+                        if (coinsReleased >= totalCoins && coins.length === 0) {
+                            endGame();
+                        }
+                    }
+                }
+            };
+
+            const isCoinCollectedAlongSwipe = (coin, x1, y1, x2, y2) => {
+                let touchRadius = coin.radius * 1;
+                let distanceToStart = p.dist(coin.x, coin.y, x1, y1);
+                let distanceToEnd = p.dist(coin.x, coin.y, x2, y2);
+                return distanceToStart < touchRadius || distanceToEnd < touchRadius;
             };
 
             const triggerFreeze = () => {
@@ -236,7 +279,7 @@ const FullScreenGame = () => {
                 update() {
                     this.x += this.xSpeed;
                     this.y += this.ySpeed;
-                    this.lifespan -= 5;
+                    this.lifespan -= 4;
                 }
 
                 draw() {
@@ -250,71 +293,92 @@ const FullScreenGame = () => {
                 }
             }
 
-            const getNextCoinType = () => {
-                let totalDistributed = 0;
-                let rand = p.random(0, totalCoins - coinsReleased);
-
-                for (let type in coinDistribution) {
-                    totalDistributed += coinDistribution[type];
-                    if (rand < totalDistributed) {
-                        coinDistribution[type]--;
-                        return type;
-                    }
-                }
-                return null;
+            const displayGame = () => {
+                p.fill(255);
+                p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.02);
             };
 
             const endGame = () => {
                 gameEnded = true;
-                fadeOutEffect(() => {
-                    p.noLoop();
-                    navigate('/game', { state: { score } }); // Navigate back to Home with the score
-                });
+                freezeStart = p.millis();
+                fadeAmount = 0;
+                setTimeout(() => navigateToHome(), 5000);
+            };
+
+            const navigateToHome = () => {
+                navigate('/home', { state: { score: score } });
             };
 
             const showGameOverPopup = () => {
-                p.fill(0, 0, 0, 150);
+                p.fill(0, 0, 0, 200);
                 p.rect(0, 0, screen_width, screen_height);
 
                 p.fill(255);
                 p.textAlign(p.CENTER, p.CENTER);
                 p.textSize(32);
-                p.text('Game Over', screen_width / 2, screen_height / 2 - 20);
-                p.textSize(24);
-                p.text(`Final Score: ${score}`, screen_width / 2, screen_height / 2 + 20);
+                p.text('Game Over', screen_width / 2, screen_height / 2 - 50);
+                p.text(`Your Score: ${score}`, screen_width / 2, screen_height / 2);
 
-                // Add Collect Button
-                p.fill(0, 150);
-                p.rect(screen_width / 2 - 50, screen_height / 2 + 60, 100, 40, 10);
                 p.fill(255);
+                p.rect(screen_width / 2 - 100, screen_height / 2 + 50, 200, 50, 20);
+                p.fill(0);
                 p.textSize(20);
-                p.textAlign(p.CENTER, p.CENTER);
-                p.text('Collect', screen_width / 2, screen_height / 2 + 80);
+                p.text('Collect', screen_width / 2, screen_height / 2 + 75);
+
+                p.noLoop();
+            };
+
+            const getNextCoinType = () => {
+                let r = p.random(0, totalCoins);
+                if (r < coinDistribution.silver) {
+                    coinDistribution.silver--;
+                    return "silver";
+                } else if (r < coinDistribution.silver + coinDistribution.gold) {
+                    coinDistribution.gold--;
+                    return "gold";
+                } else if (r < coinDistribution.silver + coinDistribution.gold + coinDistribution.bronze) {
+                    coinDistribution.bronze--;
+                    return "bronze";
+                } else if (r < coinDistribution.silver + coinDistribution.gold + coinDistribution.bronze + coinDistribution.new) {
+                    coinDistribution.new--;
+                    return "new";
+                }
+                return null;
+            };
+
+            p.mousePressed = () => {
+                if (gameEnded) {
+                    if (p.mouseX >= screen_width / 2 - 100 && p.mouseX <= screen_width / 2 + 100 && p.mouseY >= screen_height / 2 + 50 && p.mouseY <= screen_height / 2 + 100) {
+                        navigateToHome();
+                    }
+                }
             };
 
             p.touchStarted = () => {
                 if (gameEnded) {
-                    // Check if touch is on the Collect button
-                    let touchX = p.touches[0].x;
-                    let touchY = p.touches[0].y;
-                    if (touchX > screen_width / 2 - 50 && touchX < screen_width / 2 + 50 &&
-                        touchY > screen_height / 2 + 60 && touchY < screen_height / 2 + 100) {
-                        endGame();
+                    if (p.mouseX >= screen_width / 2 - 100 && p.mouseX <= screen_width / 2 + 100 && p.mouseY >= screen_height / 2 + 50 && p.mouseY <= screen_height / 2 + 100) {
+                        navigateToHome();
                     }
-                } else {
-                    collectCoins();
                 }
+            };
+
+            p.windowResized = () => {
+                screen_width = p.windowWidth;
+                screen_height = p.windowHeight;
+                p.resizeCanvas(screen_width, screen_height);
             };
         };
 
-        const p5Instance = new p5(sketch, sketchRef.current);
+        sketchRef.current = new p5(sketch);
 
         return () => {
-            p5Instance.remove();
+            sketchRef.current.remove();
         };
     }, [navigate]);
 
-    return <div ref={sketchRef}></div>;
+    return (
+        <div ref={sketchRef} />
+    );
 };
 
 export default FullScreenGame;
