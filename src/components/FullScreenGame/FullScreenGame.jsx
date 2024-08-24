@@ -1,4 +1,3 @@
-// GamePage.jsx
 import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import p5 from 'p5';
@@ -79,8 +78,7 @@ const FullScreenGame = () => {
                         isFrozen = false;
                         lastCoinReleaseTime += p.millis() - freezeStart;
                     } else {
-                        displayGame();
-                        return;
+                        return; // Skip the rest of the draw loop if frozen
                     }
                 }
 
@@ -281,7 +279,9 @@ const FullScreenGame = () => {
                 p.textAlign(p.CENTER, p.CENTER);
                 p.textSize(32);
                 p.text('Game Over', screen_width / 2, screen_height / 2 - 20);
-                p.textSize(24);
+                p.textSize
+
+(24);
                 p.text(`Final Score: ${score}`, screen_width / 2, screen_height / 2 + 20);
             };
 

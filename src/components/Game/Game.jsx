@@ -22,7 +22,7 @@ const Game = () => {
             </button>
             {score > 0 && (
                 <div className="score-display">
-                    <h2 className='bg-black'>Final Score: {score}</h2>
+                    <h2>Final Score: {score}</h2>
                 </div>
             )}
         </div>
