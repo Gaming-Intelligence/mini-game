@@ -1,11 +1,8 @@
-// GamePage.jsx
 import React, { useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import p5 from 'p5';
 
 const FullScreenGame = () => {
     const sketchRef = useRef();
-    const navigate = useNavigate();
 
     useEffect(() => {
         const sketch = (p) => {
@@ -20,7 +17,7 @@ const FullScreenGame = () => {
             let totalCoins = 155;
             let coinsReleased = 0;
             let gameEnded = false;
-            let freezeTime = 3000;
+            let freezeTime = 3000; // 3 seconds freeze time
             let isFrozen = false;
             let freezeStart = 0;
             let lastCoinReleaseTime = 0;
@@ -39,6 +36,8 @@ const FullScreenGame = () => {
                 backgroundImage = p.loadImage('/images/background2.jpg', () => {
                     imageLoaded = true;
                 });
+
+                // Load coin images
                 goldCoinImage = p.loadImage('/images/gi_coin.png');
                 silverCoinImage = p.loadImage('/images/new_coin.png');
                 bronzeCoinImage = p.loadImage('/images/bull_coin.png');
@@ -51,7 +50,8 @@ const FullScreenGame = () => {
                 p.createCanvas(screen_width, screen_height);
                 p.textSize(screen_height * 0.05);
                 p.textAlign(p.LEFT, p.TOP);
-                coinInterval = 45 * 1000 / totalCoins;
+
+                coinInterval = 45 * 1000 / totalCoins; // Coin drop interval
             };
 
             p.draw = () => {
@@ -64,41 +64,53 @@ const FullScreenGame = () => {
                     return;
                 }
 
+                // Background image
                 p.image(backgroundImage, 0, 0, screen_width, screen_height);
 
+                // Continue updating and drawing particles even when frozen
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    particles[i].update();
+                    particles[i].draw();
+                    if (particles[i].isFinished()) {
+                        particles.splice(i, 1);
+                    }
+                }
+
                 if (isFrozen) {
-                    displayGame(); // Ensure displayGame is defined
                     if (p.millis() - freezeStart >= freezeTime) {
                         isFrozen = false;
                         lastCoinReleaseTime += p.millis() - freezeStart;
                     } else {
+                        // Draw the game during freeze but stop coin drops
+                        displayGame();
                         return;
                     }
-                } else {
-                    let currentTime = p.millis();
-                    if (coinsReleased < totalCoins && currentTime - lastCoinReleaseTime >= coinInterval) {
-                        let coinType = getNextCoinType();
-                        if (coinType) {
-                            let fallDuration = screen_height / 45;
-                            let speed = screen_height / fallDuration;
-                            coins.push(new Coin(coinType, speed));
-                            coinsReleased++;
-                            lastCoinReleaseTime = currentTime;
+                }
+
+                let currentTime = p.millis();
+                if (coinsReleased < totalCoins && currentTime - lastCoinReleaseTime >= coinInterval) {
+                    let coinType = getNextCoinType();
+                    if (coinType) {
+                        let fallDuration = screen_height / 45;
+                        let speed = screen_height / fallDuration;
+                        coins.push(new Coin(coinType, speed));
+                        coinsReleased++;
+                        lastCoinReleaseTime = currentTime;
+                    }
+                }
+
+                for (let i = coins.length - 1; i >= 0; i--) {
+                    coins[i].update();
+                    coins[i].draw();
+
+                    if (coins[i].collected || coins[i].y > screen_height + coins[i].radius) {
+                        coins.splice(i, 1);
+
+                        // Check if the last coin is collected or leaves the screen
+                        if (coinsReleased >= totalCoins && coins.length === 0) {
+                            endGame();
                         }
                     }
-
-                    coins.forEach((coin, i) => {
-                        coin.update();
-                        coin.draw();
-
-                        if (coin.collected || coin.y > screen_height + coin.radius) {
-                            coins.splice(i, 1);
-
-                            if (coinsReleased >= totalCoins && coins.length === 0) {
-                                endGame();
-                            }
-                        }
-                    });
                 }
 
                 p.fill(255);
@@ -129,7 +141,22 @@ const FullScreenGame = () => {
                 }
             };
 
+            p.touchStarted = () => {
+                collectCoins();
+                return false;
+            };
+
+            p.touchMoved = () => {
+                detectSwipe();
+                return false;
+            };
+
+            const detectSwipe = () => {
+                collectCoins();
+            };
+
             const collectCoins = () => {
+                // Iterate through each touch point
                 for (let t = 0; t < p.touches.length; t++) {
                     let touchX = p.touches[t].x;
                     let touchY = p.touches[t].y;
@@ -146,9 +173,10 @@ const FullScreenGame = () => {
                                 triggerFreeze();
                             }
 
-                            createParticles(coins[i].x, coins[i].y);
+                            createParticles(coins[i].x, coins[i].y); // Create particles at the coin's position
                             coins.splice(i, 1);
 
+                            // Check if the last coin is collected
                             if (coinsReleased >= totalCoins && coins.length === 0) {
                                 endGame();
                             }
@@ -162,24 +190,13 @@ const FullScreenGame = () => {
                 freezeStart = p.millis();
             };
 
-            const displayGame = () => {
-                // Define what should be done when the game is frozen.
-                // You can use this to display a paused screen or any visual indicator.
-                p.fill(0, 122, 255, 150);
-                p.rect(0, 0, screen_width, screen_height);
-                p.fill(255);
-                p.textSize(32);
-                p.textAlign(p.CENTER, p.CENTER);
-                p.text('Game Paused', screen_width / 2, screen_height / 2);
-            };
-
             class Coin {
                 constructor(coinType, speed) {
                     this.radius = base_radius * (screen_height / 600);
                     this.x = p.random(this.radius, screen_width - this.radius);
                     this.y = -this.radius;
                     this.coinType = coinType;
-                    this.angle = 0;
+                    this.angle = 0; // Angle for rotation
 
                     if (this.coinType === "gold") {
                         this.image = goldCoinImage;
@@ -195,13 +212,13 @@ const FullScreenGame = () => {
                         this.value = 0;
                     }
 
-                    this.speed = speed * 0.1;
+                    this.speed = speed * 0.1; // Adjust speed scaling
                     this.collected = false;
                 }
 
                 update() {
                     this.y += this.speed;
-                    this.angle += 0.05;
+                    this.angle += 0.05; // Increase angle for rotation
                 }
 
                 draw() {
@@ -254,69 +271,78 @@ const FullScreenGame = () => {
                 }
             }
 
+            const displayGame = () => {
+                for (let i = coins.length - 1; i >= 0; i--) {
+                    coins[i].draw();
+                }
+
+                p.fill(255);
+                p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.02);
+            };
+
             const getNextCoinType = () => {
-                let totalDistributed = 0;
-                let rand = p.random(0, totalCoins - coinsReleased);
+                let rand = p.random(1, totalCoins);
+                let cumulativeProbability = 0;
 
                 for (let type in coinDistribution) {
-                    totalDistributed += coinDistribution[type];
-                    if (rand < totalDistributed) {
-                        coinDistribution[type]--;
+                    cumulativeProbability += coinDistribution[type];
+                    if (rand <= cumulativeProbability) {
                         return type;
                     }
                 }
-                return
 
-                null;
+                return null;
             };
 
             const endGame = () => {
                 gameEnded = true;
-                fadeOutEffect(() => {
+                coinsReleased = totalCoins;
+                fadeAmount = 0;
+
+                // Trigger fade out and navigation back to Home page
+                const fadeOutCallback = () => {
                     p.noLoop();
-                    navigate('/game', { state: { score } }); // Navigate back to Home with the score
-                });
+                    // Navigate to Home.jsx with the score
+                    navigateHome();
+                };
+
+                fadeOutEffect(fadeOutCallback);
             };
 
             const showGameOverPopup = () => {
-                p.fill(0, 0, 0, 150);
-                p.rect(0, 0, screen_width, screen_height);
+                let popupWidth = screen_width * 0.8;
+                let popupHeight = screen_height * 0.4;
+                let popupX = (screen_width - popupWidth) / 2;
+                let popupY = (screen_height - popupHeight) / 2;
+
+                p.fill(0, 0, 0, 200);
+                p.rect(popupX, popupY, popupWidth, popupHeight, 20);
 
                 p.fill(255);
                 p.textAlign(p.CENTER, p.CENTER);
                 p.textSize(32);
-                p.text('Game Over', screen_width / 2, screen_height / 2 - 20);
+                p.text("Game Over", screen_width / 2, popupY + popupHeight * 0.25);
                 p.textSize(24);
-                p.text(`Final Score: ${score}`, screen_width / 2, screen_height / 2 + 20);
-
-                // Add Collect Button
-                p.fill(0, 122, 255);
-                p.rect(screen_width / 2 - 75, screen_height / 2 + 60, 150, 40, 20);
-                p.fill(255);
-                p.textSize(18);
-                p.text('Collect', screen_width / 2, screen_height / 2 + 80);
+                p.text(`Your Score: ${score}`, screen_width / 2, popupY + popupHeight * 0.5);
             };
 
-            p.touchStarted = () => {
-                collectCoins();
+            const navigateHome = () => {
+                // Navigate to Home.jsx with the score as a parameter
+                console.log('Game Over! Score:', score);
+                // Implement navigation logic to Home.jsx here
+                // You may use React Router or any other navigation library
             };
 
-            p.windowResized = () => {
-                screen_width = p.windowWidth;
-                screen_height = p.windowHeight;
-                p.resizeCanvas(screen_width, screen_height);
-            };
         };
 
-        const p5Instance = new p5(sketch, sketchRef.current);
+        const myP5 = new p5(sketch, sketchRef.current);
+
         return () => {
-            p5Instance.remove();
+            myP5.remove();
         };
-    }, [navigate]);
+    }, []);
 
-    return (
-        <div ref={sketchRef} style={{ width: '100%', height: '100%' }} />
-    );
+    return <div ref={sketchRef} />;
 };
 
 export default FullScreenGame;
