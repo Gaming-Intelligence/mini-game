@@ -21,7 +21,7 @@ const Game = () => {
                 Start Game
             </button>
             {score > 0 && (
-                <div className="score-display">
+                <div className="score-display pt-4">
                     <h2>Final Score: {score}</h2>
                 </div>
             )}
