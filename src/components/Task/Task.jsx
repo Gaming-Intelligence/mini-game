@@ -7,13 +7,14 @@ import image3 from '/src/assets/telegram.png';
 import image4 from '/src/assets/instagram.png';
 import tasksIcon from '/src/assets/tasksIcon.png';
 import friendsIcon from '/src/assets/friendsIcon.png';
+import image5 from '/src/assets/youtube.png';
 
 const Task = () => {
   const buttons = [
-    { image: image1, text: 'Facebook', link: 'https://www.facebook.com' },
-    { image: image2, text: 'Twitter', link: 'https://www.twitter.com' },
-    { image: image3, text: 'Telegram', link: 'https://web.telegram.org/k/' },
-    { image: image4, text: 'Instagram', link: 'https://www.instagram.com/' },
+    { image: image5, text: 'Youtube', link: 'https://youtube.com/@gamingintelligence_gi' },
+    { image: image2, text: 'Twitter', link: 'https://x.com/GI_Token_' },
+    { image: image3, text: 'Telegram', link: 'https://t.me/Gaming_Intelligence' },
+    { image: image4, text: 'Instagram', link: 'https://www.instagram.com/gaming_intelligence' },
     // Add more buttons as needed
   ];
 

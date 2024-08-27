@@ -1,128 +1,146 @@
-import React, { useState, useEffect } from "react";
-import { getDatabase, ref, set, get, child } from "firebase/database";
-import { app } from "../../firebase";
+import React, { useState, useEffect, useRef } from "react";
 import profilePic from "/src/assets/profile.png";
 import giPic from '/src/assets/gi.png';
 import animationData from '/src/assets/animation.json';
 import Lottie from "react-lottie";
 
-const db = getDatabase(app);
-
 const Home = () => {
-  const [count, setCount] = useState(() => parseInt(localStorage.getItem("count")) || 0);
-  const [coins, setCoins] = useState(() => parseInt(localStorage.getItem("coins")) || 0);
-  const [name, setName] = useState(() => localStorage.getItem("name") || "");
-  const [timer, setTimer] = useState(() => parseInt(localStorage.getItem("timer")) || 0);
-  const [isActive, setIsActive] = useState(() => JSON.parse(localStorage.getItem("isActive")) || false);
-  const [buttonText, setButtonText] = useState(() => localStorage.getItem("buttonText") || "Farming");
-  const [isCollecting, setIsCollecting] = useState(() => JSON.parse(localStorage.getItem("isCollecting")) || false);
+  const [farming, setFarming] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [collectReady, setCollectReady] = useState(false);
+  const [cooldown, setCooldown] = useState(false);
+  const farmingDuration = 1 * 1 * 60 * 1000; // 4 hours in milliseconds
+  const cooldownDuration = 1 * 1 * 60 * 1000; // 4-hour cooldown in milliseconds
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
-    // Save to localStorage whenever these states change
-    localStorage.setItem("count", count);
-    localStorage.setItem("coins", coins);
-    localStorage.setItem("name", name);
-    localStorage.setItem("timer", timer);
-    localStorage.setItem("isActive", JSON.stringify(isActive));
-    localStorage.setItem("buttonText", buttonText);
-    localStorage.setItem("isCollecting", JSON.stringify(isCollecting));
-  }, [count, coins, name, timer, isActive, buttonText, isCollecting]);
-
-  const putData = () => {
-    const dbRef = ref(db, "users/sourav");
-    get(dbRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        const previousCoins = snapshot.val().count || 0;
-        const newTotalCoins = previousCoins + count;
-
-        set(dbRef, {
-          id: 1,
-          name: name,
-          count: newTotalCoins,
-        }).then(() => {
-          setCoins(newTotalCoins);
-          fetchData();
-        }).catch((error) => {
-          console.error("Error updating Firebase:", error);
-        });
-      }
-    }).catch((error) => {
-      console.error("Error fetching data:", error);
-    });
-  };
-
-  const fetchData = () => {
-    const dbRef = ref(db);
-    get(child(dbRef, `users/sourav`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const fetchedCoins = snapshot.val().count;
-          const fetchedName = snapshot.val().name;
-          setCoins(fetchedCoins);
-          setName(fetchedName);
-          // Also save to localStorage
-          localStorage.setItem("coins", fetchedCoins);
-          localStorage.setItem("name", fetchedName);
+  const loadStateFromLocalStorage = () => {
+    const savedState = JSON.parse(localStorage.getItem('farmingState'));
+    if (savedState) {
+      const { farming, collectReady, cooldown, endTime, cooldownEndTime } = savedState;
+      const currentTime = Date.now();
+      if (farming) {
+        const timeRemaining = endTime - currentTime;
+        if (timeRemaining > 0) {
+          setFarming(true);
+          setCollectReady(false);
+          setCooldown(false);
+          setTimeLeft(timeRemaining);
+          setIsPlaying(true); // Start animation
         } else {
-          console.log("No data available");
+          setFarming(false);
+          setCollectReady(true);
+          setTimeLeft(0);
+          setIsPlaying(false); // Stop animation
         }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      } else if (cooldown) {
+        const cooldownTimeRemaining = cooldownEndTime - currentTime;
+        if (cooldownTimeRemaining > 0) {
+          setFarming(false);
+          setCollectReady(false);
+          setCooldown(true);
+          setTimeLeft(cooldownTimeRemaining);
+          setIsPlaying(false); // Stop animation
+        } else {
+          setFarming(false);
+          setCollectReady(false);
+          setCooldown(false);
+          setTimeLeft(0);
+        }
+      }
+    }
+  };
+
+  const saveStateToLocalStorage = () => {
+    const state = {
+      farming,
+      collectReady,
+      cooldown,
+      endTime: farming ? Date.now() + timeLeft : null,
+      cooldownEndTime: cooldown ? Date.now() + timeLeft : null
+    };
+    localStorage.setItem('farmingState', JSON.stringify(state));
   };
 
   useEffect(() => {
-    fetchData();
+    loadStateFromLocalStorage();
   }, []);
+
+  useEffect(() => {
+    saveStateToLocalStorage();
+  }, [farming, collectReady, cooldown, timeLeft]);
+
+  useEffect(() => {
+    let timer;
+    if (farming) {
+      timer = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          const newTime = prevTime - 1000;
+          if (newTime <= 0) {
+            clearInterval(timer);
+            setFarming(false);
+            setCollectReady(true);
+            setIsPlaying(false); // Stop animation
+            return 0;
+          }
+          return newTime;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [farming]);
+
+  useEffect(() => {
+    let timer;
+    if (cooldown) {
+      timer = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          const newTime = prevTime - 1000;
+          if (newTime <= 0) {
+            clearInterval(timer);
+            setCooldown(false);
+            return 0;
+          }
+          return newTime;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [cooldown]);
+
+  const startFarming = () => {
+    setFarming(true);
+    setCollectReady(false);
+    setCooldown(false);
+    setTimeLeft(farmingDuration);
+    setIsPlaying(true); // Start animation
+  };
+
+  const collectFarming = () => {
+    setFarming(false);
+    setCollectReady(false);
+    setCooldown(true);
+    setTimeLeft(cooldownDuration);
+    setIsPlaying(false); // Stop animation
+  };
+
+  const getWaterWidth = () => {
+    if (farming) {
+      return `${((farmingDuration - timeLeft) / farmingDuration) * 100}%`;
+    }
+    if (collectReady) {
+      return '100%'; // Pipe should be full when ready to collect
+    }
+    return '0%'; // Pipe is empty otherwise
+  };
 
   const defaultOptions = {
     loop: true,
-    autoplay: true,
+    autoplay: false,
+    isPaused: !isPlaying,
     animationData: animationData,
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice'
     }
-  };
-
-  useEffect(() => {
-    let interval = null;
-    if (isActive && timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1);
-      }, 1000);
-    } else if (timer === 0 && isActive) {
-      setIsActive(false);
-      if (isCollecting) {
-        setIsCollecting(false);
-        setButtonText("Farming");
-      } else {
-        setButtonText("Collect");
-      }
-    }
-    return () => clearInterval(interval);
-  }, [isActive, timer, isCollecting]);
-
-  const handleButtonClick = () => {
-    if (buttonText === "Farming") {
-      setTimer(5); 
-      setIsActive(true);
-      setButtonText(formatTime(5));
-      setCount(14400); 
-    } else if (buttonText === "Collect") {
-      putData();
-      setIsCollecting(true);
-      setButtonText(formatTime(5)); 
-      setTimer(5); 
-      setIsActive(true);
-    }
-  };
-
-  const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600).toString().padStart(2, '0');
-    const minutes = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-    const secs = (seconds % 60).toString().padStart(2, '0');
-    return `${hours}:${minutes}:${secs}`;
   };
 
   return (
@@ -130,13 +148,13 @@ const Home = () => {
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center space-x-2 flex-1">
           <img src={profilePic} alt="Profile" className="w-10 h-10 rounded-full" />
-          <h1 className="text-l font-bold">{name}</h1>
+          <h1 className="text-l font-bold">Subham</h1>
         </div>
         <div className="flex-1 flex justify-center">
           <img src={giPic} alt="Header" className="w-16 h-16 object-cover rounded-full shadow-md" />
         </div>
         <div className="flex-1 flex justify-end">
-          <button className="bg-navy text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-200">
+          <button className="bg-navy text-white px-4 py-2 rounded-full transition duration-200">
             About
           </button>
         </div>
@@ -144,22 +162,65 @@ const Home = () => {
 
       <div className="text-center mb-6">
         <h2 className="text-xl font-semibold">GI Points</h2>
-        <p className="text-2xl font-bold text-gray-800">{coins}</p> 
+        <p className="text-2xl font-bold text-gray-800">14400</p>
       </div>
 
       <div className="flex justify-center mb-6">
-        <Lottie options={defaultOptions} height={300} width={300} />
+        <Lottie options={defaultOptions} height={300} width={300} isStopped={!isPlaying} />
       </div>
 
       <div className="w-full mb-6">
-        <button
-          onClick={handleButtonClick}
-          className="relative w-full bg-blue-500 bg-opacity-80 border-2 border-blue-700 text-white px-8 py-6 rounded-full shadow-lg flex items-center justify-center text-xl font-bold"
+
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '50px',
+            border: '2px solid #000',
+            borderRadius: '25px',
+            backgroundColor: '#f0f0f0',
+            overflow: 'hidden',
+          }}
         >
-          <span className="absolute top-1/2 transform -translate-y-1/2">
-            {isActive ? formatTime(timer) : buttonText}
-          </span>
-        </button>
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              height: '100%',
+              width: getWaterWidth(),
+              backgroundColor: '#76c7c0',
+              transition: 'none',
+            }}
+          />
+          <button
+            onClick={collectReady ? collectFarming : startFarming}
+            disabled={farming || cooldown}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              border: 'none',
+              color: '#000',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              cursor: farming || cooldown ? 'not-allowed' : 'pointer',
+              textAlign: 'center',
+            }}
+          >
+            {farming
+              ? `Farming (${new Date(timeLeft).toISOString().substr(11, 8)})`
+              : collectReady
+                ? 'Collect'
+                : cooldown
+                  ? `Cooldown (${new Date(timeLeft).toISOString().substr(11, 8)})`
+                  : 'Start Farming'}
+          </button>
+        </div>
+
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const FullScreenGame = () => {
             let score = 0;
             let base_radius = 25;
             let backgroundImage;
-            let goldCoinImage, silverCoinImage, bronzeCoinImage, newCoinImage;
+            let goldCoinImage, silverCoinImage, bronzeCoinImage, newCoinImage, bnbCoinImage, maticCoinImage, bitCoinImage;
             let imageLoaded = false;
             let totalCoins = 155;
             let coinsReleased = 0;
@@ -24,7 +24,10 @@ const FullScreenGame = () => {
             let freezeStart = 0;
             let lastCoinReleaseTime = 0;
             let coinDistribution = {
-                silver: 95,
+                silver: 25,
+                bnb: 25,
+                matic: 25,
+                bit: 25,
                 gold: 50,
                 bronze: 6,
                 new: 4
@@ -44,6 +47,9 @@ const FullScreenGame = () => {
                 silverCoinImage = p.loadImage('/images/new_coin.png');
                 bronzeCoinImage = p.loadImage('/images/bull_coin.png');
                 newCoinImage = p.loadImage('/images/bear_coin.png');
+                bnbCoinImage = p.loadImage('/images/bnbCoin.png');
+                maticCoinImage = p.loadImage('/images/maticCoin.png');
+                bitCoinImage = p.loadImage('/images/bitCoin.png');
             };
 
             p.setup = () => {
@@ -116,7 +122,7 @@ const FullScreenGame = () => {
                 }
 
                 p.fill(255);
-                p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.02);
+                p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.02,);
 
                 if (gameEnded) {
                     showGameOverPopup();
@@ -212,9 +218,18 @@ const FullScreenGame = () => {
                     } else if (this.coinType === "new") {
                         this.image = newCoinImage;
                         this.value = 0;
+                    } else if (this.coinType === "bnb") {
+                        this.image = bnbCoinImage;
+                        this.value = 100;
+                    } else if (this.coinType === "matic") {
+                        this.image = maticCoinImage;
+                        this.value = 100;
+                    } else if (this.coinType === "bit") {
+                        this.image = bitCoinImage;
+                        this.value = 100;
                     }
 
-                    this.speed = speed * 0.1; // Adjust speed scaling
+                    this.speed = speed * 0.2; // Adjust speed scaling
                     this.collected = false;
                 }
 
@@ -302,30 +317,6 @@ const FullScreenGame = () => {
                     p.noLoop();
                     navigate('/game', { state: { score } }); // Navigate back to Home with the score
                 });
-            };
-
-            const showGameOverPopup = () => {
-                let popupWidth = screen_width * 0.8;
-                let popupHeight = screen_height * 0.4;
-                let popupX = (screen_width - popupWidth) / 2;
-                let popupY = (screen_height - popupHeight) / 2;
-
-                p.fill(0, 0, 0, 200);
-                p.rect(popupX, popupY, popupWidth, popupHeight, 20);
-
-                p.fill(255);
-                p.textAlign(p.CENTER, p.CENTER);
-                p.textSize(32);
-                p.text("Game Over", screen_width / 2, popupY + popupHeight * 0.25);
-                p.textSize(24);
-                p.text(`Your Score: ${score}`, screen_width / 2, popupY + popupHeight * 0.5);
-            };
-
-            const navigateHome = () => {
-                // Navigate to Home.jsx with the score as a parameter
-                console.log('Game Over! Score:', score);
-                // Implement navigation logic to Home.jsx here
-                // You may use React Router or any other navigation library
             };
 
         };
