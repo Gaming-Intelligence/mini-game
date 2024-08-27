@@ -25,7 +25,7 @@ const Game = () => {
         const interval = setInterval(() => {
             if (keys < 10) {
                 const now = Date.now();
-                if (now - lastKeyAdded >= 1 * 2 * 60 * 1000) { // 6 hours in milliseconds
+                if (now - lastKeyAdded >= 1 * 1 * 60 * 1000) { // 6 hours in milliseconds
                     setKeys(prevKeys => Math.min(prevKeys + 1, 10));
                     setLastKeyAdded(now);
                     localStorage.setItem('keys', Math.min(keys + 1, 10));
@@ -55,7 +55,7 @@ const Game = () => {
             <div className='mb-4 flex justify-center'>
                 <button
                     onClick={startGame}
-                    className={`bg-blue-500 text-white px-4 py-2 rounded-full transition duration-200 ${keys === 0 ? 'opacity-50 cursor-not-allowed' : 'bg-blue-600'} flex items-center`}
+                    className={`bg-blue-500 text-white px-4 py-2 rounded-full flex items-center transition duration-200 ${keys === 0 ? 'opacity-50 cursor-not-allowed' : 'bg-blue-600'}`}
                     disabled={keys === 0}
                 >
                     <img src={gameIcon} alt="gameIcon" className="w-6 h-6 mr-2" />
