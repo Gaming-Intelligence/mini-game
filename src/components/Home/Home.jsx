@@ -3,6 +3,7 @@ import profilePic from "/src/assets/profile.png";
 import giPic from '/src/assets/gi.png';
 import animationData from '/src/assets/animation.json';
 import Lottie from "react-lottie";
+import Popup from '../Popup/Popup';
 
 const Home = () => {
   const [farming, setFarming] = useState(false);
@@ -12,6 +13,7 @@ const Home = () => {
   const farmingDuration = 1 * 1 * 60 * 1000; // 4 hours in milliseconds
   const cooldownDuration = 1 * 1 * 60 * 1000; // 4-hour cooldown in milliseconds
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const loadStateFromLocalStorage = () => {
     const savedState = JSON.parse(localStorage.getItem('farmingState'));
@@ -143,6 +145,14 @@ const Home = () => {
     }
   };
 
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   return (
     <div className="w-full h-full px-4 py-2 bg-white">
       <div className="flex justify-between items-center mb-6">
@@ -154,9 +164,15 @@ const Home = () => {
           <img src={giPic} alt="Header" className="w-16 h-16 object-cover rounded-full shadow-md" />
         </div>
         <div className="flex-1 flex justify-end">
-          <button className="bg-navy text-white px-4 py-2 rounded-full transition duration-200">
+          <button onClick={handleOpenPopup} className="bg-navy text-white px-4 py-2 rounded-full transition duration-200">
             About
           </button>
+          <Popup
+            isOpen={isPopupOpen}
+            onClose={handleClosePopup}
+            title="Gaming Intelligence"
+            content="Welcome to Gaming Intelligence, where the future of gaming meets the cutting-edge advancements in artificial intelligence and blockchain technology. Our project is dedicated to revolutionizing the gaming industry by introducing a unique crypto token designed specifically for enhancing artificial intelligence (AI) in gaming."
+          />
         </div>
       </div>
 

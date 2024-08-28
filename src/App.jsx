@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Airdrop from './components/Airdrop/Airdrop';
@@ -9,26 +9,35 @@ import Task from './components/Task/Task';
 import Upgrade from './components/Upgrade/Upgrade';
 import Layout from './components/Layout';
 import Friends from './components/Friends/Friends';
+import SplashScreen from './components/SplashScreen'; // Import the SplashScreen component
 
 function App() {
-  return (
+  const [isSplashVisible, setIsSplashVisible] = useState(true);
 
+  const handleSplashFinish = () => {
+    setIsSplashVisible(false);
+  };
+
+  return (
     <Router>
       <div className="bg-white text-black min-h-screen">
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/airdrop" element={<Airdrop />} />
-            <Route path="/game" element={<Game />} />
-            <Route path="/upgrade" element={<Upgrade />} />
-            <Route path="/task" element={<Task />} />
-            <Route path="/full-screen-game" element={<FullScreenGame />} />
-            <Route path="/friends" element={<Friends />} />
-          </Routes>
-        </Layout>
+        {isSplashVisible ? (
+          <SplashScreen onFinish={handleSplashFinish} />
+        ) : (
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/airdrop" element={<Airdrop />} />
+              <Route path="/game" element={<Game />} />
+              <Route path="/upgrade" element={<Upgrade />} />
+              <Route path="/task" element={<Task />} />
+              <Route path="/full-screen-game" element={<FullScreenGame />} />
+              <Route path="/friends" element={<Friends />} />
+            </Routes>
+          </Layout>
+        )}
       </div>
     </Router>
-
   );
 }
 
