@@ -17,21 +17,6 @@ const Home = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (WebApp.initDataUnsafe.user) {
-      try {
-        const userData = WebApp.initDataUnsafe.user;
-        setUserData(userData);
-      } catch (error) {
-        setError('Failed to load user data');
-      }
-    }
-  }, [WebApp.initDataUnsafe.user]);
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   const loadStateFromLocalStorage = () => {
     const savedState = JSON.parse(localStorage.getItem('farmingState'));
     if (savedState) {
@@ -169,6 +154,21 @@ const Home = () => {
   const handleClosePopup = () => {
     setIsPopupOpen(false);
   };
+
+  useEffect(() => {
+    if (WebApp.initDataUnsafe.user) {
+      try {
+        const userData = WebApp.initDataUnsafe.user;
+        setUserData(userData);
+      } catch (error) {
+        setError('Failed to load user data');
+      }
+    }
+  }, [WebApp.initDataUnsafe.user]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="w-full h-full px-4 py-2 bg-white">
