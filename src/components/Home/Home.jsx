@@ -14,6 +14,23 @@ const Home = () => {
   const cooldownDuration = 1 * 1 * 60 * 1000; // 4-hour cooldown in milliseconds
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (WebApp.initDataUnsafe.user) {
+      try {
+        const userData = WebApp.initDataUnsafe.user;
+        setUserData(userData);
+      } catch (error) {
+        setError('Failed to load user data');
+      }
+    }
+  }, [WebApp.initDataUnsafe.user]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   const loadStateFromLocalStorage = () => {
     const savedState = JSON.parse(localStorage.getItem('farmingState'));
@@ -158,7 +175,7 @@ const Home = () => {
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center space-x-2 flex-1">
           <img src={profilePic} alt="Profile" className="w-10 h-10 rounded-full" />
-          <h1 className="text-l font-bold">Subham</h1>
+          <h1 className="text-l font-bold">{userData.first_name}</h1>
         </div>
         <div className="flex-1 flex justify-center">
           <img src={giPic} alt="Header" className="w-16 h-16 object-cover rounded-full shadow-md" />
