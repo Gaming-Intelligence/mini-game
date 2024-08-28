@@ -12,7 +12,7 @@ const Game = () => {
     // Initialize keys from localStorage or set to 0 if not present
     const [keys, setKeys] = useState(() => {
         const storedKeys = localStorage.getItem('keys');
-        return storedKeys ? parseInt(storedKeys, 10) : 0;
+        return storedKeys ? parseInt(storedKeys, 10) : 3;
     });
 
     const [lastKeyAdded, setLastKeyAdded] = useState(() => {
