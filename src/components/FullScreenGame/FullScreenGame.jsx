@@ -16,7 +16,7 @@ const FullScreenGame = () => {
             let backgroundImage;
             let goldCoinImage, silverCoinImage, bronzeCoinImage, newCoinImage, bnbCoinImage, maticCoinImage, bitCoinImage;
             let imageLoaded = false;
-            let totalCoins = 155;
+            let totalCoins = 160;
             let coinsReleased = 0;
             let gameEnded = false;
             let freezeTime = 3000; // 3 seconds freeze time
@@ -29,10 +29,9 @@ const FullScreenGame = () => {
                 matic: 25,
                 bit: 25,
                 gold: 50,
-                bronze: 6,
-                new: 4
+                bronze: 5,
+                new: 5,
             };
-            let coinInterval;
             let particles = [];
             let fadeAmount = 0;
             let fadingIn = true;
@@ -58,8 +57,6 @@ const FullScreenGame = () => {
                 p.createCanvas(screen_width, screen_height);
                 p.textSize(screen_height * 0.05);
                 p.textAlign(p.LEFT, p.TOP);
-
-                coinInterval = 45 * 1000 / totalCoins; // Coin drop interval
             };
 
             p.draw = () => {
@@ -96,10 +93,10 @@ const FullScreenGame = () => {
                 }
 
                 let currentTime = p.millis();
-                if (coinsReleased < totalCoins && currentTime - lastCoinReleaseTime >= coinInterval) {
+                if (coinsReleased < totalCoins && currentTime - lastCoinReleaseTime >= p.random(200, 800)) {
                     let coinType = getNextCoinType();
                     if (coinType) {
-                        let fallDuration = screen_height / 45;
+                        let fallDuration = p.random(20, 50); // Randomize fall duration
                         let speed = screen_height / fallDuration;
                         coins.push(new Coin(coinType, speed));
                         coinsReleased++;
@@ -122,10 +119,9 @@ const FullScreenGame = () => {
                 }
 
                 p.fill(255);
-                p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.02,);
+                p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.02);
 
                 if (gameEnded) {
-                    showGameOverPopup();
                 } else if (fadingIn) {
                     fadeInEffect();
                 }
@@ -229,7 +225,7 @@ const FullScreenGame = () => {
                         this.value = 100;
                     }
 
-                    this.speed = speed * 0.2; // Adjust speed scaling
+                    this.speed = speed * 0.3; // Adjust speed scaling
                     this.collected = false;
                 }
 
