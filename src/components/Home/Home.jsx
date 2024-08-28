@@ -17,6 +17,7 @@ const Home = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
 
+
   const loadStateFromLocalStorage = () => {
     const savedState = JSON.parse(localStorage.getItem('farmingState'));
     if (savedState) {
