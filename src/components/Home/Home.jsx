@@ -4,6 +4,7 @@ import giPic from '/src/assets/gi.png';
 import animationData from '/src/assets/animation.json';
 import Lottie from "react-lottie";
 import Popup from '../Popup/Popup';
+import WebApp from '@twa-dev/sdk';
 
 const Home = () => {
   const [farming, setFarming] = useState(false);
@@ -16,6 +17,22 @@ const Home = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
+
+
+  useEffect(() => {
+    if (WebApp.initDataUnsafe.user) {
+      try {
+        const userData = WebApp.initDataUnsafe.user;
+        setUserData(userData);
+      } catch (error) {
+        setError('Failed to load user data');
+      }
+    }
+  }, [WebApp.initDataUnsafe.user]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
 
   const loadStateFromLocalStorage = () => {
@@ -156,107 +173,100 @@ const Home = () => {
     setIsPopupOpen(false);
   };
 
-  useEffect(() => {
-    if (WebApp.initDataUnsafe.user) {
-      try {
-        const userData = WebApp.initDataUnsafe.user;
-        setUserData(userData);
-      } catch (error) {
-        setError('Failed to load user data');
-      }
-    }
-  }, [WebApp.initDataUnsafe.user]);
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
-    <div className="w-full h-full px-4 py-2 bg-white">
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center space-x-2 flex-1">
-          <img src={profilePic} alt="Profile" className="w-10 h-10 rounded-full" />
-          <h1 className="text-l font-bold">{userData.first_name}</h1>
-        </div>
-        <div className="flex-1 flex justify-center">
-          <img src={giPic} alt="Header" className="w-16 h-16 object-cover rounded-full shadow-md" />
-        </div>
-        <div className="flex-1 flex justify-end">
-          <button onClick={handleOpenPopup} className="bg-navy text-white px-4 py-2 rounded-full transition duration-200">
-            About
-          </button>
-          <Popup
-            isOpen={isPopupOpen}
-            onClose={handleClosePopup}
-            title="Gaming Intelligence"
-            content="Welcome to Gaming Intelligence, where the future of gaming meets the cutting-edge advancements in artificial intelligence and blockchain technology. Our project is dedicated to revolutionizing the gaming industry by introducing a unique crypto token designed specifically for enhancing artificial intelligence (AI) in gaming."
-          />
-        </div>
-      </div>
+    <main className="p-4">
+      {userData ? (
+        <>
+          <div className="w-full h-full px-4 py-2 bg-white">
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex items-center space-x-2 flex-1">
+                <img src={profilePic} alt="Profile" className="w-10 h-10 rounded-full" />
+                <h1 className="text-l font-bold">{userData.first_name}</h1>
+              </div>
+              <div className="flex-1 flex justify-center">
+                <img src={giPic} alt="Header" className="w-16 h-16 object-cover rounded-full shadow-md" />
+              </div>
+              <div className="flex-1 flex justify-end">
+                <button onClick={handleOpenPopup} className="bg-navy text-white px-4 py-2 rounded-full transition duration-200">
+                  About
+                </button>
+                <Popup
+                  isOpen={isPopupOpen}
+                  onClose={handleClosePopup}
+                  title="Gaming Intelligence"
+                  content="Welcome to Gaming Intelligence, where the future of gaming meets the cutting-edge advancements in artificial intelligence and blockchain technology. Our project is dedicated to revolutionizing the gaming industry by introducing a unique crypto token designed specifically for enhancing artificial intelligence (AI) in gaming."
+                />
+              </div>
+            </div>
 
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold">GI Points</h2>
-        <p className="text-2xl font-bold text-gray-800">14400</p>
-      </div>
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-semibold">GI Points</h2>
+              <p className="text-2xl font-bold text-gray-800">14400</p>
+            </div>
 
-      <div className="flex justify-center mb-6">
-        <Lottie options={defaultOptions} height={300} width={300} isStopped={!isPlaying} />
-      </div>
+            <div className="flex justify-center mb-6">
+              <Lottie options={defaultOptions} height={300} width={300} isStopped={!isPlaying} />
+            </div>
 
-      <div className="w-full mb-6">
+            <div className="w-full mb-6">
 
-        <div
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '50px',
-            border: '2px solid #000',
-            borderRadius: '25px',
-            backgroundColor: '#f0f0f0',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              height: '100%',
-              width: getWaterWidth(),
-              backgroundColor: '#76c7c0',
-              transition: 'none',
-            }}
-          />
-          <button
-            onClick={collectReady ? collectFarming : startFarming}
-            disabled={farming || cooldown}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(255, 255, 255, 0.8)',
-              border: 'none',
-              color: '#000',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: farming || cooldown ? 'not-allowed' : 'pointer',
-              textAlign: 'center',
-            }}
-          >
-            {farming
-              ? `Farming (${new Date(timeLeft).toISOString().substr(11, 8)})`
-              : collectReady
-                ? 'Collect'
-                : cooldown
-                  ? `Cooldown (${new Date(timeLeft).toISOString().substr(11, 8)})`
-                  : 'Start Farming'}
-          </button>
-        </div>
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  height: '50px',
+                  border: '2px solid #000',
+                  borderRadius: '25px',
+                  backgroundColor: '#f0f0f0',
+                  overflow: 'hidden',
+                }}
+              >
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    height: '100%',
+                    width: getWaterWidth(),
+                    backgroundColor: '#76c7c0',
+                    transition: 'none',
+                  }}
+                />
+                <button
+                  onClick={collectReady ? collectFarming : startFarming}
+                  disabled={farming || cooldown}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    border: 'none',
+                    color: '#000',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    cursor: farming || cooldown ? 'not-allowed' : 'pointer',
+                    textAlign: 'center',
+                  }}
+                >
+                  {farming
+                    ? `Farming (${new Date(timeLeft).toISOString().substr(11, 8)})`
+                    : collectReady
+                      ? 'Collect'
+                      : cooldown
+                        ? `Cooldown (${new Date(timeLeft).toISOString().substr(11, 8)})`
+                        : 'Start Farming'}
+                </button>
+              </div>
 
-      </div>
-    </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div>Loading...</div>
+      )}
+    </main>
   );
 };
 
