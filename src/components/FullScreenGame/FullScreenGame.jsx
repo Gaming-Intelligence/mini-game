@@ -55,7 +55,8 @@ const FullScreenGame = () => {
                 screen_width = p.windowWidth;
                 screen_height = p.windowHeight;
                 p.createCanvas(screen_width, screen_height);
-                p.textSize(screen_height * 0.05);
+                p.textSize(screen_height * 0.03);
+                p.textFont('Roboto');
                 p.textAlign(p.LEFT, p.TOP);
             };
 
