@@ -1,41 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import key from '/src/assets/key.png';
 import gameIcon from '/src/assets/game_start.png';
+import { KeyContext } from '../KeyContext'; // Import KeyContext
 
 const Game = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [score, setScore] = useState(location.state?.score || 0);
 
-    // Initialize keys from localStorage or set to 0 if not present
-    const [keys, setKeys] = useState(() => {
-        const storedKeys = localStorage.getItem('keys');
-        return storedKeys ? parseInt(storedKeys, 10) : 3;
-    });
-
-    const [lastKeyAdded, setLastKeyAdded] = useState(() => {
-        const storedLastKeyAdded = localStorage.getItem('lastKeyAdded');
-        return storedLastKeyAdded ? parseInt(storedLastKeyAdded, 10) : Date.now();
-    });
-
-    // Add a key every 6 hours if the user has less than 10 keys
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (keys < 10) {
-                const now = Date.now();
-                if (now - lastKeyAdded >= 1 * 1 * 60 * 1000) { // 6 hours in milliseconds
-                    setKeys(prevKeys => Math.min(prevKeys + 1, 10));
-                    setLastKeyAdded(now);
-                    localStorage.setItem('keys', Math.min(keys + 1, 10));
-                    localStorage.setItem('lastKeyAdded', now);
-                }
-            }
-        }, 1000); // Check every second
-
-        return () => clearInterval(interval);
-    }, [keys, lastKeyAdded]);
+    // Use keys from the global context
+    const { keys, setKeys, generateKeys } = useContext(KeyContext);
 
     // Start the game and use a key
     const startGame = () => {
@@ -50,7 +26,10 @@ const Game = () => {
         <div className="p-4 md:p-8">
             <h1 className="text-xl md:text-3xl font-bold mb-4">Game Page</h1>
             <div className='mb-4 flex justify-center'>
-                <button className='bg-navy px-4 py-2 rounded-full text-white flex items-center'> <img src={key} alt="Keyss" className="w-6 h-6 mr-2" /> Keys : {keys}</button>
+                <button className='bg-navy px-4 py-2 rounded-full text-white flex items-center'>
+                    <img src={key} alt="Keys" className="w-6 h-6 mr-2" />
+                    Keys : {keys}
+                </button>
             </div>
             <div className='mb-4 flex justify-center'>
                 <button
