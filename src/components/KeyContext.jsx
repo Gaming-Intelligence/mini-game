@@ -58,7 +58,7 @@ export const KeyProvider = ({ children }) => {
         if (keys > 0) {
             const newKeyCount = keys - 1;
             setKeys(newKeyCount);
-            updateKeysInLocalStorage(newKeyCount, lastKeyAdded);
+            updateKeysInLocalStorage(newKeyCount);
         }
     };
 
