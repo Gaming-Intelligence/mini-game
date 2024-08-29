@@ -17,11 +17,11 @@ export const KeyProvider = ({ children }) => {
 
     const generateKeys = useCallback(() => {
         const now = Date.now();
-        const hoursElapsed = Math.floor((now - lastKeyAdded) / (1 * 1 * 2 * 1000)); // 6 hours in milliseconds
+        const hoursElapsed = Math.floor((now - lastKeyAdded) / (6 * 60 * 60 * 1000)); // 6 hours in milliseconds
 
         if (hoursElapsed > 0 && keys < 10) {
-            const newKeys = Math.min(keys + hoursElapsed, 10); // Add keys based on elapsed hours
-            const newLastKeyAdded = lastKeyAdded + hoursElapsed * 1 * 2 * 60 * 1000;
+            const newKeys = Math.min(keys + hoursElapsed, 10); // Calculate the potential new key count
+            const newLastKeyAdded = lastKeyAdded + hoursElapsed * 6 * 60 * 60 * 1000;
 
             setKeys(newKeys);
             setLastKeyAdded(newLastKeyAdded);
@@ -33,10 +33,12 @@ export const KeyProvider = ({ children }) => {
         const interval = setInterval(() => {
             const currentNow = Date.now();
             if (keys < 10) {
-                if (currentNow - lastKeyAdded >= 1 * 2 * 60 * 1000) {
-                    setKeys(prevKeys => Math.min(prevKeys + 1, 10));
+                if (currentNow - lastKeyAdded >= 6 * 60 * 60 * 1000) {
+                    const additionalKeys = 1;
+                    const newKeyCount = Math.min(keys + additionalKeys, 10);
+                    setKeys(newKeyCount);
                     setLastKeyAdded(currentNow);
-                    localStorage.setItem('keys', Math.min(keys + 1, 10));
+                    localStorage.setItem('keys', newKeyCount);
                     localStorage.setItem('lastKeyAdded', currentNow);
                 }
             }
