@@ -1,23 +1,19 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { KeyContext } from '../KeyContext';
 import key from '/src/assets/key.png';
 import gameIcon from '/src/assets/game_start.png';
-import { KeyContext } from '../KeyContext'; // Import KeyContext
 
 const Game = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { keys, consumeKey } = useContext(KeyContext);
     const [score, setScore] = useState(location.state?.score || 0);
 
-    // Use keys from the global context
-    const { keys, setKeys, generateKeys } = useContext(KeyContext);
-
-    // Start the game and use a key
     const startGame = () => {
         if (keys > 0) {
-            setKeys(prevKeys => prevKeys - 1);
-            localStorage.setItem('keys', keys - 1);
+            consumeKey(); // Synchronously consume a key
             navigate('/full-screen-game');
         }
     };
@@ -27,8 +23,7 @@ const Game = () => {
             <h1 className="text-xl md:text-3xl font-bold mb-4">Game Page</h1>
             <div className='mb-4 flex justify-center'>
                 <button className='bg-navy px-4 py-2 rounded-full text-white flex items-center'>
-                    <img src={key} alt="Keys" className="w-6 h-6 mr-2" />
-                    Keys : {keys}
+                    <img src={key} alt="Keys" className="w-6 h-6 mr-2" /> Keys : {keys}
                 </button>
             </div>
             <div className='mb-4 flex justify-center'>
