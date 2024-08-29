@@ -181,7 +181,7 @@ const Home = () => {
             <div className="flex justify-between items-center mb-6">
               <div className="flex items-center space-x-2 flex-1">
                 <img src={profilePic} alt="Profile" className="w-10 h-10 rounded-full" />
-                <h1 className="text-l font-bold">{userData.username}</h1>
+                
               </div>
               <div className="flex-1 flex justify-center">
                 <img src={giPic} alt="Header" className="w-16 h-16 object-cover rounded-full shadow-md" />
@@ -198,6 +198,8 @@ const Home = () => {
                 />
               </div>
             </div>
+
+            <h1 className="text-l font-bold mb-6">Hello, {userData.username}</h1>
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
