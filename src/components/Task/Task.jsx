@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import arrowIcon from '/src/assets/arrow-right.png';
-import image1 from '/src/assets/facebook.png'; // Replace with your actual image paths
 import image2 from '/src/assets/twitter.png';
 import image3 from '/src/assets/telegram.png';
 import image4 from '/src/assets/instagram.png';

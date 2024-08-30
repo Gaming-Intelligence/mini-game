@@ -7,7 +7,7 @@ export const KeyContext = createContext();
 export const KeyProvider = ({ children }) => {
     const [keys, setKeys] = useState(() => {
         const storedKeys = localStorage.getItem('keys');
-        return storedKeys ? parseInt(storedKeys, 10) : 1;
+        return storedKeys ? parseInt(storedKeys, 10) : 10;
     });
 
     const [lastKeyAdded, setLastKeyAdded] = useState(() => {
