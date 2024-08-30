@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Airdrop from './components/Airdrop/Airdrop';
@@ -9,36 +9,38 @@ import Task from './components/Task/Task';
 import Upgrade from './components/Upgrade/Upgrade';
 import Layout from './components/Layout';
 import Friends from './components/Friends/Friends';
-import SplashScreen from './components/SplashScreen';
+import SplashScreen from './components/SplashScreen/SplashScreen';
 import { KeyProvider } from './components/KeyContext';
 
 function App() {
-  const [isSplashVisible, setIsSplashVisible] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const handleSplashFinish = () => {
-    setIsSplashVisible(false);
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // Adjust the duration of the splash screen
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <KeyProvider>
       <Router>
-        <div className="bg-white text-black min-h-screen">
-          {isSplashVisible ? (
-            <SplashScreen onFinish={handleSplashFinish} />
-          ) : (
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/airdrop" element={<Airdrop />} />
-                <Route path="/game" element={<Game />} />
-                <Route path="/upgrade" element={<Upgrade />} />
-                <Route path="/task" element={<Task />} />
-                <Route path="/full-screen-game" element={<FullScreenGame />} />
-                <Route path="/friends" element={<Friends />} />
-              </Routes>
-            </Layout>
-          )}
-        </div>
+        {loading ? (
+          <SplashScreen />
+        ) : (
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/airdrop" element={<Airdrop />} />
+              <Route path="/game" element={<Game />} />
+              <Route path="/upgrade" element={<Upgrade />} />
+              <Route path="/task" element={<Task />} />
+              <Route path="/full-screen-game" element={<FullScreenGame />} />
+              <Route path="/friends" element={<Friends />} />
+            </Routes>
+          </Layout>
+        )}
       </Router>
     </KeyProvider>
   );
