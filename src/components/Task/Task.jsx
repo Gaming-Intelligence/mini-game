@@ -10,10 +10,10 @@ import image5 from '/src/assets/youtube.png';
 
 const Task = () => {
   const buttons = [
-    { image: image5, text: 'Youtube', link: 'https://youtube.com/@gamingintelligence_gi' },
-    { image: image2, text: 'Twitter', link: 'https://x.com/GI_Token_' },
-    { image: image3, text: 'Telegram', link: 'https://t.me/Gaming_Intelligence' },
-    { image: image4, text: 'Instagram', link: 'https://www.instagram.com/gaming_intelligence' },
+    { image: image5, text: 'Youtube  (1000 gip)', link: 'https://youtube.com/@gamingintelligence_gi' },
+    { image: image2, text: 'Twitter  (1000 gip)', link: 'https://x.com/GI_Token_' },
+    { image: image3, text: 'Telegram  (1000 gip)', link: 'https://t.me/Gaming_Intelligence' },
+    { image: image4, text: 'Instagram  (1000 gip)', link: 'https://www.instagram.com/gaming_intelligence' },
     // Add more buttons as needed
   ];
 
@@ -57,7 +57,7 @@ const Task = () => {
               rel="noopener noreferrer"
               className="flex items-center bg-lightblue bg-ivory text-navy font-bold py-4 px-6 rounded-lg w-full shadow-lg transition duration-300"
             >
-              <img src={button.image} alt={button.text} className="w-12 h-12 mr-4" />
+              <img src={button.image} alt={button.image} className="w-12 h-12 mr-4" />
               <span className="flex-grow text-center">{button.text}</span>
               <img src={arrowIcon} alt="Arrow Icon" className="w-6 h-6" />
             </a>

@@ -18,7 +18,6 @@ const Home = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
 
-
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
       try {
@@ -33,7 +32,6 @@ const Home = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
-
 
   const loadStateFromLocalStorage = () => {
     const savedState = JSON.parse(localStorage.getItem('farmingState'));
@@ -178,10 +176,9 @@ const Home = () => {
       {userData ? (
         <>
           <div className="w-full h-full px-4 py-2 bg-white">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
               <div className="flex items-center space-x-2 flex-1">
                 <img src={profilePic} alt="Profile" className="w-10 h-10 rounded-full" />
-                
               </div>
               <div className="flex-1 flex justify-center">
                 <img src={giPic} alt="Header" className="w-16 h-16 object-cover rounded-full shadow-md" />
@@ -199,7 +196,7 @@ const Home = () => {
               </div>
             </div>
 
-            <h1 className="text-l font-bold mb-6">Hello, {userData.username}</h1>
+            <h1 className="text-l font-bold mb-6 text-center md:text-left">Hello, {userData.username}</h1>
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
@@ -211,46 +208,18 @@ const Home = () => {
             </div>
 
             <div className="w-full mb-6">
-
               <div
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '50px',
-                  border: '2px solid #000',
-                  borderRadius: '25px',
-                  backgroundColor: '#f0f0f0',
-                  overflow: 'hidden',
-                }}
+                className="relative w-full h-12 border-2 border-black rounded-full bg-gray-100 overflow-hidden"
               >
                 <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    height: '100%',
-                    width: getWaterWidth(),
-                    backgroundColor: '#76c7c0',
-                    transition: 'none',
-                  }}
+                  className="absolute top-0 left-0 h-full bg-teal-500 transition-none"
+                  style={{ width: getWaterWidth() }}
                 />
                 <button
                   onClick={collectReady ? collectFarming : startFarming}
                   disabled={farming || cooldown}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                    border: 'none',
-                    color: '#000',
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                    cursor: farming || cooldown ? 'not-allowed' : 'pointer',
-                    textAlign: 'center',
-                  }}
+                  className={`absolute top-0 left-0 w-full h-full bg-white/80 border-none text-black font-bold text-center ${farming || cooldown ? 'cursor-not-allowed' : 'cursor-pointer'
+                    }`}
                 >
                   {farming
                     ? `Farming (${new Date(timeLeft).toISOString().substr(11, 8)})`
@@ -261,7 +230,6 @@ const Home = () => {
                         : 'Start Farming'}
                 </button>
               </div>
-
             </div>
           </div>
         </>
