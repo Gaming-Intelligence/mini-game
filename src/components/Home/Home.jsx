@@ -172,7 +172,7 @@ const Home = () => {
   };
 
   return (
-    <main className="p-4">
+    <main className="p-4 mb-6">
       {userData ? (
         <>
           <div className="w-full h-full px-4 py-2 bg-white">
