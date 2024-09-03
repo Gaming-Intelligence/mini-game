@@ -204,7 +204,7 @@ const Home = () => {
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
-              <p className="text-2xl font-bold text-gray-800">14400</p>
+              <p className="text-2xl font-bold text-yellow">14400</p>
             </div>
 
             <div className="flex justify-center mb-6 pointer-events-none bg-transparent">
