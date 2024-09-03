@@ -178,7 +178,7 @@ const Home = () => {
     <main className="p-4 mb-10 text-yellow">
       {userData ? (
         <>
-          <div className="w-full h-full px-4 py-2 bg-white">
+          <div className="w-full h-full px-4 py-2">
             <div className="flex justify-between items-center mb-6">
               <div className="flex items-center space-x-2 flex-1">
                 <img src={profilePic} alt="Profile" className="w-10 h-10 rounded-full" />
