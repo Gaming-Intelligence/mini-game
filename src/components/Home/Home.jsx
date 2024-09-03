@@ -208,7 +208,7 @@ const Home = () => {
             </div>
 
             <div className="flex justify-center mb-6 pointer-events-none bg-transparent">
-              <Lottie options={defaultOptions} height={250} width={280} isStopped={!isPlaying} />
+              <Lottie options={defaultOptions} height={250} width={310} isStopped={!isPlaying} />
             </div>
 
             <div className="w-full mb-6">
