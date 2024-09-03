@@ -207,7 +207,7 @@ const Home = () => {
               <p className="text-2xl font-bold text-gray-800">14400</p>
             </div>
 
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-6 pointer-events-none">
               <Lottie options={defaultOptions} height={250} width={250} isStopped={!isPlaying} />
             </div>
 
