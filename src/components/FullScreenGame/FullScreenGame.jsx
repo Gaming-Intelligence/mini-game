@@ -120,7 +120,7 @@ const FullScreenGame = () => {
                 }
 
                 p.fill(255);
-                p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.02);
+                p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.06);
 
                 if (gameEnded) {
                 } else if (fadingIn) {
@@ -291,7 +291,7 @@ const FullScreenGame = () => {
                 }
 
                 p.fill(255);
-                p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.02);
+                p.text(`Score: ${score}`, screen_width * 0.02, screen_height * 0.06);
             };
 
             const getNextCoinType = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import profilePic from "/src/assets/profile.png";
 import giPic from '/src/assets/gi.png';
-import animationData from '/src/assets/animation3.json';
+import animationData from '/src/assets/animation4.json';
 import Lottie from "react-lottie";
 import Popup from '../Popup/Popup';
 import WebApp from '@twa-dev/sdk';
