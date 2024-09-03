@@ -33,7 +33,7 @@ const Friends = () => {
       </nav>
 
       {/* Friends Page Content */}
-      <div className="p-4">
+      <div className="p-4 text-yellow">
         <h1 className="text-2xl font-bold p-4">Invite Friends!</h1>
         <h3 className="text-xl p-8 ">Invite Friends And Earn More</h3>
         <button className="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300">

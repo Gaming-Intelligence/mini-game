@@ -162,7 +162,7 @@ const Home = () => {
     isClickToPauseDisabled: true,
     animationData: animationData,
     rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
+      preserveAspectRatio: 'xMidYMid slice',
     }
   };
 
@@ -175,7 +175,7 @@ const Home = () => {
   };
 
   return (
-    <main className="p-4 mb-10">
+    <main className="p-4 mb-10 text-yellow">
       {userData ? (
         <>
           <div className="w-full h-full px-4 py-2 bg-white">
@@ -207,8 +207,8 @@ const Home = () => {
               <p className="text-2xl font-bold text-gray-800">14400</p>
             </div>
 
-            <div className="flex justify-center mb-6 pointer-events-none">
-              <Lottie options={defaultOptions} height={250} width={250} isStopped={!isPlaying} />
+            <div className="flex justify-center mb-6 pointer-events-none bg-transparent">
+              <Lottie options={defaultOptions} height={250} width={280} isStopped={!isPlaying} />
             </div>
 
             <div className="w-full mb-6">

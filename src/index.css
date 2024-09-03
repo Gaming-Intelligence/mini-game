@@ -5,6 +5,10 @@
 body {
     background-color: white !important;
     color: black;
+    background-image: url('./assets/background4.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 
