@@ -159,6 +159,7 @@ const Home = () => {
     loop: true,
     autoplay: false,
     isPaused: !isPlaying,
+    isClickToPauseDisabled: true,
     animationData: animationData,
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice'
