@@ -7,15 +7,35 @@ import image4 from '/src/assets/metallic_insta_logo.png';
 import tasksIcon from '/src/assets/tasksIcon.png';
 import friendsIcon from '/src/assets/friendsIcon.png';
 import image5 from '/src/assets/metallic_youtube_logo.png';
+import axios from 'axios';
 
 const Task = () => {
   const buttons = [
-    { image: image5, text: 'Youtube  (1000 GIP)', link: 'https://youtube.com/@gamingintelligence_gi' },
-    { image: image2, text: 'Twitter  (1000 GIP)', link: 'https://x.com/GI_Token_' },
-    { image: image3, text: 'Telegram  (1000 GIP)', link: 'https://t.me/Gaming_Intelligence' },
-    { image: image4, text: 'Instagram  (1000 GIP)', link: 'https://www.instagram.com/gaming_intelligence' },
+    { image: image5, text: 'Youtube  (1000 GIP)', link: 'https://youtube.com/@gamingintelligence_gi', taskName: 'youtube' },
+    { image: image2, text: 'Twitter  (1000 GIP)', link: 'https://x.com/GI_Token_', taskName: 'twitter' },
+    { image: image3, text: 'Telegram  (1000 GIP)', link: 'https://t.me/Gaming_Intelligence', taskName: 'telegram' },
+    { image: image4, text: 'Instagram  (1000 GIP)', link: 'https://www.instagram.com/gaming_intelligence', taskName: 'instagram' },
     // Add more buttons as needed
   ];
+
+  const handleTaskClick = async (task) => {
+    try {
+      const response = await axios.post('/api/tasks/complete-task', {
+        username,
+        taskName: task.taskName,
+        coins: fixedCoins
+      });
+
+      if (response.status === 200) {
+        alert(`Task completed! You now have ${response.data.coins} coins.`);
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error completing task:', error);
+      alert('An error occurred while completing the task.');
+    }
+  };
 
   return (
     <div className='min-h-screen'>

@@ -5,6 +5,7 @@ import animationData from '/src/assets/animation4.json';
 import Lottie from "react-lottie";
 import Popup from '../Popup/Popup';
 import WebApp from '@twa-dev/sdk';
+import axios from 'axios';
 
 const Home = () => {
   const [farming, setFarming] = useState(false);
@@ -17,13 +18,28 @@ const Home = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
-
+  const ROOT_URL = import.meta.env.VITE_LOCALHOST_URL;
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
       try {
         const userData = WebApp.initDataUnsafe.user;
         setUserData(userData);
+
+        axios.post(ROOT_URL+"/saveUsers", {
+          first_name: userData.first_name,
+          username: userData.username,
+          is_premium: userData.is_premium ? 'Yes' : 'No',
+        })
+          .then(response => {
+            console.log('User created:', response.data);
+          })
+          .catch(error => {
+            console.error('There was an error creating the user!', error);
+          });
+
+          localStorage.setItem('username', userData.username);
+
       } catch (error) {
         setError('Failed to load user data');
       }
@@ -137,12 +153,27 @@ const Home = () => {
     setIsPlaying(true); // Start animation
   };
 
-  const collectFarming = () => {
+  const collectFarming = async () => {
     setFarming(false);
     setCollectReady(false);
     setCooldown(true);
     setTimeLeft(cooldownDuration);
     setIsPlaying(false); // Stop animation
+
+    if (userData) {
+      try {
+        const response = await axios.post(ROOT_URL+"/getAllUsers", {
+          username: userData.username, // Send username instead of userId
+          coins: 14400, // Coins generated after farming
+        });
+
+        const data = response.data;
+        console.log('Coins collected successfully:', data.coins);
+        // Optionally, update the UI with the new coin balance
+      } catch (error) {
+        console.error('Error collecting coins:', error.response ? error.response.data.message : error.message);
+      }
+    }
   };
 
   const getWaterWidth = () => {
