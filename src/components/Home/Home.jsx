@@ -18,7 +18,7 @@ const Home = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
-  const [coin, setCoin] = useState(null);
+  const [coins, setCoins] = useState(0);
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -43,6 +43,20 @@ const Home = () => {
       }
     }
   }, [WebApp.initDataUnsafe.user]);
+
+  useEffect(() => {
+    if (userData) {
+      axios.post('https://backend-api-iutr.onrender.com/api/user/findCoins', {
+        username: userData.username
+      })
+        .then(response => {
+          setCoins(response.data.coins); // Update the coins state
+        })
+        .catch(error => {
+          console.error('There was an error fetching the coins!', error.response ? error.response.data.message : error.message);
+        });
+    }
+  }, [userData]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -166,7 +180,6 @@ const Home = () => {
         });
 
         const data = response.data;
-        setCoin(data);
         console.log('Coins collected successfully:', data.coins);
         // Optionally, update the UI with the new coin balance
       } catch (error) {
@@ -234,7 +247,7 @@ const Home = () => {
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
-              <p className="text-2xl font-bold text-yellow">{coin.coins}</p>
+              <p className="text-2xl font-bold text-yellow">{coins}</p>
             </div>
 
             <div className="flex justify-center mb-6 pointer-events-none bg-transparent">
