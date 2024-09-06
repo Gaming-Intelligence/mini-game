@@ -18,7 +18,7 @@ const Home = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
-  const [coins, setCoins] = useState(null);
+  const [coins, setCoins] = useState(0);
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -50,7 +50,7 @@ const Home = () => {
         username: userData.username
       })
         .then(response => {
-          setCoins(response); // Update the coins state
+          setCoins(response.data); // Update the coins state
         })
         .catch(error => {
           console.error('There was an error fetching the coins!', error.response ? error.response.data.message : error.message);
