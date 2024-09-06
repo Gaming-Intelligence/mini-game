@@ -5,6 +5,7 @@ import animationData from '/src/assets/animation4.json';
 import Lottie from "react-lottie";
 import Popup from '../Popup/Popup';
 import WebApp from '@twa-dev/sdk';
+import axios from "axios";
 
 const Home = () => {
   const [farming, setFarming] = useState(false);
@@ -24,16 +25,16 @@ const Home = () => {
         const userData = WebApp.initDataUnsafe.user;
         setUserData(userData);
 
-        axios.post("https://backend-api-iutr.onrender.com/api/user/saveUser", {
-          first_name: userData.first_name,
-          username: userData.username,
-          is_premium: userData.is_premium ? 'Yes' : 'No',
+        axios.post("https://https://backend-api-iutr.onrender.com/api/user/saveUser", {
+          first_name: "suraj",
+          username: "surajj",
+          is_premium: true
         })
           .then(response => {
             console.log('User created:', response.data);
           })
           .catch(error => {
-            console.error('There was an error creating the user!', error);
+            console.error('There was an error creating the user!', error.response ? error.response.data.message : error.message);
           });
 
       } catch (error) {
