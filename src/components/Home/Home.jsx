@@ -160,7 +160,7 @@ const Home = () => {
     if (userData) {
       try {
         const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/saveCoins", {
-          username: "surajj", // Send username instead of userId
+          username: userData.username, // Send username instead of userId
           coins: 14400, // Coins generated after farming
         });
 
@@ -232,7 +232,7 @@ const Home = () => {
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
-              <p className="text-2xl font-bold text-yellow">14000</p>
+              <p className="text-2xl font-bold text-yellow">{data.coins}</p>
             </div>
 
             <div className="flex justify-center mb-6 pointer-events-none bg-transparent">
