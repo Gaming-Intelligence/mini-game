@@ -26,9 +26,9 @@ const Home = () => {
         setUserData(userData);
 
         axios.post("https://https://backend-api-iutr.onrender.com/api/user/saveUser", {
-          first_name: "suraj",
-          username: "surajj",
-          is_premium: true
+          first_name: userData.first_name,
+          username: userData.username,
+          is_premium: userData.is_premium ? 'Yes' : 'No'
         })
           .then(response => {
             console.log('User created:', response.data);
