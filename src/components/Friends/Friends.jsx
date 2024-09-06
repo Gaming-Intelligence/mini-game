@@ -1,37 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-import axios from 'axios';
 import tasksIcon from '/src/assets/tasksIcon.png';
 import friendsIcon from '/src/assets/friendsIcon.png';
 
 const Friends = () => {
-
-  const [userName, setUsername] = useState(null);
-
-  useEffect(() => {
-    // Retrieve the username from local storage
-    const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
-  }, []);
-
-  const handleInviteClick = async () => {
-    try {
-      const username = {userName}; // Replace with the actual username
-      const response = await axios.post(ROOT_URL+"/findCoins", {
-        username
-      });
-      const inviteLink = response.data.refferalLink;
-
-      // Open Telegram with the invite link
-      const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent('Join me using this link!')}`;
-      window.open(telegramUrl, '_blank');
-    } catch (error) {
-      console.error('Error fetching the invite link:', error);
-    }
-  };
-
   return (
     <div>
       {/* Top Navbar */}
@@ -64,10 +36,7 @@ const Friends = () => {
       <div className="p-4 text-yellow">
         <h1 className="text-2xl font-bold p-4">Invite Friends!</h1>
         <h3 className="text-xl p-8 ">Invite Friends And Earn More</h3>
-        <button
-          className="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300"
-          onClick={handleInviteClick}
-        >
+        <button className="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300">
           Invite Friends
         </button>
       </div>

@@ -26,7 +26,7 @@ const Home = () => {
         const userData = WebApp.initDataUnsafe.user;
         setUserData(userData);
 
-        axios.post(ROOT_URL+"/saveUsers", {
+        axios.post(ROOT_URL+"/saveUser", {
           first_name: userData.first_name,
           username: userData.username,
           is_premium: userData.is_premium ? 'Yes' : 'No',
@@ -162,7 +162,7 @@ const Home = () => {
 
     if (userData) {
       try {
-        const response = await axios.post(ROOT_URL+"/getAllUsers", {
+        const response = await axios.post(ROOT_URL+"/saveCoins", {
           username: userData.username, // Send username instead of userId
           coins: 14400, // Coins generated after farming
         });
@@ -235,7 +235,7 @@ const Home = () => {
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
-              <p className="text-2xl font-bold text-yellow">14400</p>
+              <p className="text-2xl font-bold text-yellow">{data.coins}</p>
             </div>
 
             <div className="flex justify-center mb-6 pointer-events-none bg-transparent">
