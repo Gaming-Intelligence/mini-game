@@ -50,7 +50,7 @@ const Home = () => {
         username: userData.username
       })
         .then(response => {
-          setCoins(response.data); // Update the coins state
+          setCoins(response); // Update the coins state
         })
         .catch(error => {
           console.error('There was an error fetching the coins!', error.response ? error.response.data.message : error.message);
