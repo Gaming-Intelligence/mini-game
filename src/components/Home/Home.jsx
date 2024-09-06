@@ -157,20 +157,20 @@ const Home = () => {
     setTimeLeft(cooldownDuration);
     setIsPlaying(false); // Stop animation
 
-    // if (userData) {
-    //   try {
-    //     const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/saveCoins", {
-    //       username: "cyco", // Send username instead of userId
-    //       coins: 14400, // Coins generated after farming
-    //     });
+    if (userData) {
+      try {
+        const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/saveCoins", {
+          username: "surajj", // Send username instead of userId
+          coins: 14400, // Coins generated after farming
+        });
 
-    //     const data = response.data;
-    //     console.log('Coins collected successfully:', data.coins);
-    //     // Optionally, update the UI with the new coin balance
-    //   } catch (error) {
-    //     console.error('Error collecting coins:', error.response ? error.response.data.message : error.message);
-    //   }
-    // }
+        const data = response.data;
+        console.log('Coins collected successfully:', data.coins);
+        // Optionally, update the UI with the new coin balance
+      } catch (error) {
+        console.error('Error collecting coins:', error.response ? error.response.data.message : error.message);
+      }
+    }
   };
 
   const getWaterWidth = () => {
