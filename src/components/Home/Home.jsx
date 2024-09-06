@@ -24,17 +24,17 @@ const Home = () => {
         const userData = WebApp.initDataUnsafe.user;
         setUserData(userData);
 
-        // axios.post("https://backend-api-iutr.onrender.com/api/user/saveUser", {
-        //   first_name: userData.first_name,
-        //   username: userData.username,
-        //   is_premium: userData.is_premium ? 'Yes' : 'No',
-        // })
-        //   .then(response => {
-        //     console.log('User created:', response.data);
-        //   })
-        //   .catch(error => {
-        //     console.error('There was an error creating the user!', error);
-        //   });
+        axios.post("https://backend-api-iutr.onrender.com/api/user/saveUser", {
+          first_name: userData.first_name,
+          username: userData.username,
+          is_premium: userData.is_premium ? 'Yes' : 'No',
+        })
+          .then(response => {
+            console.log('User created:', response.data);
+          })
+          .catch(error => {
+            console.error('There was an error creating the user!', error);
+          });
 
       } catch (error) {
         setError('Failed to load user data');
