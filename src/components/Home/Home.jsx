@@ -18,7 +18,6 @@ const Home = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
-  const ROOT_URL = import.meta.env.VITE_LOCALHOST_URL;
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -26,7 +25,7 @@ const Home = () => {
         const userData = WebApp.initDataUnsafe.user;
         setUserData(userData);
 
-        axios.post(ROOT_URL+"/saveUser", {
+        axios.post("https://backend-api-iutr.onrender.com/api/user/saveUser", {
           first_name: userData.first_name,
           username: userData.username,
           is_premium: userData.is_premium ? 'Yes' : 'No',
@@ -37,8 +36,6 @@ const Home = () => {
           .catch(error => {
             console.error('There was an error creating the user!', error);
           });
-
-          localStorage.setItem('username', userData.username);
 
       } catch (error) {
         setError('Failed to load user data');
@@ -162,7 +159,7 @@ const Home = () => {
 
     if (userData) {
       try {
-        const response = await axios.post(ROOT_URL+"/saveCoins", {
+        const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/saveCoins", {
           username: userData.username, // Send username instead of userId
           coins: 14400, // Coins generated after farming
         });
