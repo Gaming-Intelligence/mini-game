@@ -5,7 +5,6 @@ import animationData from '/src/assets/animation4.json';
 import Lottie from "react-lottie";
 import Popup from '../Popup/Popup';
 import WebApp from '@twa-dev/sdk';
-import axios from 'axios';
 
 const Home = () => {
   const [farming, setFarming] = useState(false);
@@ -232,7 +231,7 @@ const Home = () => {
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
-              <p className="text-2xl font-bold text-yellow">{data.coins}</p>
+              <p className="text-2xl font-bold text-yellow">14000</p>
             </div>
 
             <div className="flex justify-center mb-6 pointer-events-none bg-transparent">
