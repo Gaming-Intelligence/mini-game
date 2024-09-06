@@ -25,10 +25,10 @@ const Home = () => {
         const userData = WebApp.initDataUnsafe.user;
         setUserData(userData);
 
-        axios.post("https://backend-api-iutr.onrender.com/api/user/saveUser", {
+        axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', {
           first_name: userData.first_name,
           username: userData.username,
-          is_premium: userData.is_premium ? 'Yes' : 'No'
+          is_premium: userData.is_premium ? true : false
         })
           .then(response => {
             console.log('User created:', response.data);
