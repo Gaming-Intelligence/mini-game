@@ -18,6 +18,7 @@ const Home = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
+  const [coin, setCoin] = useState(null);
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -165,6 +166,7 @@ const Home = () => {
         });
 
         const data = response.data;
+        setCoin(data);
         console.log('Coins collected successfully:', data.coins);
         // Optionally, update the UI with the new coin balance
       } catch (error) {
@@ -232,7 +234,7 @@ const Home = () => {
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
-              <p className="text-2xl font-bold text-yellow">{data.coins}</p>
+              <p className="text-2xl font-bold text-yellow">{coin.coins}</p>
             </div>
 
             <div className="flex justify-center mb-6 pointer-events-none bg-transparent">
