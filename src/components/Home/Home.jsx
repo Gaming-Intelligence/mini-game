@@ -18,7 +18,7 @@ const Home = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
-  const [coins, setCoins] = useState(0);
+  const [coins, setCoins] = useState(null);
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
