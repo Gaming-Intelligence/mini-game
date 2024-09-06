@@ -7,7 +7,6 @@ import image4 from '/src/assets/metallic_insta_logo.png';
 import tasksIcon from '/src/assets/tasksIcon.png';
 import friendsIcon from '/src/assets/friendsIcon.png';
 import image5 from '/src/assets/metallic_youtube_logo.png';
-import axios from 'axios';
 
 const Task = () => {
   const buttons = [
@@ -18,24 +17,24 @@ const Task = () => {
     // Add more buttons as needed
   ];
 
-  const handleTaskClick = async (task) => {
-    try {
-      const response = await axios.post('/api/tasks/complete-task', {
-        username,
-        taskName: task.taskName,
-        coins: fixedCoins
-      });
+  // const handleTaskClick = async (task) => {
+  //   try {
+  //     const response = await axios.post('/api/tasks/complete-task', {
+  //       username,
+  //       taskName: task.taskName,
+  //       coins: fixedCoins
+  //     });
 
-      if (response.status === 200) {
-        alert(`Task completed! You now have ${response.data.coins} coins.`);
-      } else {
-        alert(response.data.message);
-      }
-    } catch (error) {
-      console.error('Error completing task:', error);
-      alert('An error occurred while completing the task.');
-    }
-  };
+  //     if (response.status === 200) {
+  //       alert(`Task completed! You now have ${response.data.coins} coins.`);
+  //     } else {
+  //       alert(response.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error completing task:', error);
+  //     alert('An error occurred while completing the task.');
+  //   }
+  // };
 
   return (
     <div className='min-h-screen'>
