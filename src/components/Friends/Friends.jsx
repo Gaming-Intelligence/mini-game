@@ -4,6 +4,15 @@ import tasksIcon from '/src/assets/tasksIcon.png';
 import friendsIcon from '/src/assets/friendsIcon.png';
 
 const Friends = () => {
+
+  const handleInviteClick = () => {
+    // Construct the share URL with a predefined message
+    const message = encodeURIComponent("Check out this cool web app!");
+    const url = `https://t.me/share/url?url=${window.location.href}&text=${message}`;
+
+    window.open(url, '_blank');
+  };
+
   return (
     <div>
       {/* Top Navbar */}
@@ -36,7 +45,7 @@ const Friends = () => {
       <div className="p-4 text-yellow">
         <h1 className="text-2xl font-bold p-4">Invite Friends!</h1>
         <h3 className="text-xl p-8 ">Invite Friends And Earn More</h3>
-        <button className="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300">
+        <button className="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300" onClick={handleInviteClick}>
           Invite Friends
         </button>
       </div>

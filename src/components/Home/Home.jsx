@@ -50,7 +50,7 @@ const Home = () => {
 
       try {
         const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/findCoins", {
-          username: 'surajj', // Replace with dynamic username if needed
+          username: userData.username, // Replace with dynamic username if needed
         });
 
         console.log(response.data); // Check what data is being returned
