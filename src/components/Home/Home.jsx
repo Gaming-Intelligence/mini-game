@@ -45,18 +45,25 @@ const Home = () => {
   }, [WebApp.initDataUnsafe.user]);
 
   useEffect(() => {
-    if (userData) {
-      axios.post('https://backend-api-iutr.onrender.com/api/user/findCoins', {
-        username: userData.username
-      })
-        .then(response => {
-          setCoins(response.data.coins); // Update the coins state
-        })
-        .catch(error => {
-          console.error('There was an error fetching the coins!', error.response ? error.response.data.message : error.message);
+    const fetchCoins = async () => {
+      if (!userData) return; // Exit if userData is not available
+
+      try {
+        const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/findCoins", {
+          username: 'surajj', // Replace with dynamic username if needed
         });
-    }
-  }, [userData]);
+
+        console.log(response.data); // Check what data is being returned
+        setCoins(response.data); // Assuming response.data contains the coins object
+      } catch (error) {
+        console.error('Error collecting coins:', error.response ? error.response.data.message : error.message);
+        setError(error.response ? error.response.data.message : error.message);
+      }
+    };
+
+    fetchCoins(); // Call the async function
+
+  }, [userData]); // The effect will run whenever userData changes
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -172,19 +179,20 @@ const Home = () => {
     setTimeLeft(cooldownDuration);
     setIsPlaying(false); // Stop animation
 
-    if (userData) {
-      try {
-        const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/saveCoins", {
-          username: userData.username, // Send username instead of userId
-          coins: 14400, // Coins generated after farming
-        });
+    if (!userData) return; // Early return if userData is not defined
 
-        const data = response.data;
-        console.log('Coins collected successfully:', data.coins);
-        // Optionally, update the UI with the new coin balance
-      } catch (error) {
-        console.error('Error collecting coins:', error.response ? error.response.data.message : error.message);
-      }
+    try {
+      const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/saveCoins", {
+        username: userData.username,  // Send username instead of userId
+        coins: 14400,                 // Coins generated after farming
+      });
+
+      const { coins } = response.data; // Destructure the coins from the response data
+      console.log('Coins collected successfully:', coins);
+
+      // Optionally, update the UI with the new coin balance, if needed
+    } catch (error) {
+      console.error('Error collecting coins:', error.response?.data?.message || error.message);
     }
   };
 
@@ -247,7 +255,11 @@ const Home = () => {
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
-              <p className="text-2xl font-bold text-yellow">{coins}</p>
+              {coins && (
+                <div>
+                  <p className="text-2xl font-bold text-yellow">{coins.coins}</p> {/* Adjust this according to the structure of the API response */}
+                </div>
+              )}
             </div>
 
             <div className="flex justify-center mb-6 pointer-events-none bg-transparent">
