@@ -1,16 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import tasksIcon from '/src/assets/tasksIcon.png';
 import friendsIcon from '/src/assets/friendsIcon.png';
+import axios from 'axios';
 
 const Friends = () => {
 
-  const handleInviteClick = () => {
-    // Construct the share URL with a predefined message
-    const message = encodeURIComponent("Check out this cool web app!");
-    const url = `https://t.me/share/url?url=${window.location.href}&text=${message}`;
+  const [referralLink, setReferralLink] = useState('');
+  const username = 'surajj';
 
-    window.open(url, '_blank');
+  const handleInviteClick = async () => {
+
+    try {
+      const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
+        username: username,
+        coins: 0,
+      });
+
+      console.log(response.data.userFound)
+
+      setReferralLink(response.data.userFound.refferalLink);
+    } catch (error) {
+      console.error('Error fetching referral link:', error.response ? error.response.data.message : error.message);
+    }
+
+    console.log(referralLink);
+
+    if (referralLink) {
+
+      const message = encodeURIComponent(`Hey! Use my referral link to join: ${referralLink}`);
+      const telegramUrl = `https://t.me/share/url?url=${referralLink}&text=${message}`;
+
+
+      window.open(telegramUrl, '_blank');
+    } else {
+      console.error('No referral link found');
+    }
   };
 
   return (
