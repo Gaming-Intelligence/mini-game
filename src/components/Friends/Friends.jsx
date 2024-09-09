@@ -7,13 +7,29 @@ import axios from 'axios';
 const Friends = () => {
 
   const [referralLink, setReferralLink] = useState('');
-  const username = 'surajj';
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (WebApp.initDataUnsafe.user) {
+      try {
+        const userData = WebApp.initDataUnsafe.user;
+        setUserData(userData);
+      } catch (error) {
+        setError('Failed to load user data');
+      }
+    }
+  }, [WebApp.initDataUnsafe.user]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   const handleInviteClick = async () => {
 
     try {
       const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
-        username: username,
+        username: userData.username,
         coins: 0,
       });
 

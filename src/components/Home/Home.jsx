@@ -21,6 +21,11 @@ const Home = () => {
   const [coins, setCoins] = useState(0);
 
   useEffect(() => {
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const referrerId = searchParams.get('startapp');
+
+
     if (WebApp.initDataUnsafe.user) {
       try {
         const userData = WebApp.initDataUnsafe.user;
@@ -29,7 +34,8 @@ const Home = () => {
         axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', {
           first_name: userData.first_name,
           username: userData.username,
-          is_premium: userData.is_premium ? 'Yes' : 'No'
+          is_premium: userData.is_premium ? 'Yes' : 'No',
+          referrerId: referrerId || null
         })
           .then(response => {
             console.log('User created:', response.data);
