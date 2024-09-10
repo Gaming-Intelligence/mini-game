@@ -25,7 +25,7 @@ const Home = () => {
     const initData = window.Telegram.WebApp.initDataUnsafe;
 
     // Extract referral code (start_param from Telegram WebApp)
-    const refCode = initData.start_param;
+    const refCode = initData.startapp_param;
     if (refCode) {
       setReferralCode(refCode);
       alert(`You were referred by code: ${refCode}`);
