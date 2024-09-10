@@ -22,13 +22,13 @@ const Home = () => {
   const [referralCode, setReferralCode] = useState(null);
 
   useEffect(() => {
-    const initData = window.Telegram.WebApp.initDataUnsafe;
+    const initData = window.Telegram.WebApp.initDataUnsafe?.queryId;
 
     // Extract referral code (start_param from Telegram WebApp)
-    const refCode = initData.startapp_param;
+    const refCode = initData;
     if (refCode) {
       setReferralCode(refCode);
-      alert(`You were referred by code: ${refCode}`);
+      WebApp.showAlert(`You were referred by code: ${refCode}`);
     }
   }, []);
 
@@ -47,7 +47,7 @@ const Home = () => {
             first_name: userData.first_name,
             username: userData.username,
             is_premium: userData.is_premium ? 'Yes' : 'No',
-            referrerId: userData.start_param || null
+            referrerId: referralCode || null
           })
             .then(response => {
               console.log('User created:', response.data);
