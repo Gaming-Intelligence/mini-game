@@ -23,43 +23,47 @@ const Home = () => {
 
   useEffect(() => {
 
-    const initData = WebApp.initDataUnsafe;
-    console.log('Telegram WebApp Data:', initData);
+    const registerUser = async () => {
 
-    const referrerId = initData.start_param || null;
+      const initData = WebApp.initDataUnsafe;
+      console.log('Telegram WebApp Data:', initData);
 
-    console.log('Referral Code:', referrerId);
+      const referrerId = initData.start_param || null;
 
-    setReferrerId(referrerId);
+      console.log('Referral Code:', referrerId);
 
-    if (referrerId) {
-      alert(`You were referred by: ${referrerId}`);
-    }
+      setReferrerId(referrerId);
 
-
-    if (WebApp.initDataUnsafe.user) {
-      try {
-        const userData = WebApp.initDataUnsafe.user;
-        setUserData(userData);
-
-        axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', {
-          first_name: userData.first_name,
-          username: userData.username,
-          is_premium: userData.is_premium ? 'Yes' : 'No',
-          referrerId: userData.start_param || null
-        })
-          .then(response => {
-            console.log('User created:', response.data);
-          })
-          .catch(error => {
-            console.error('There was an error creating the user!', error.response ? error.response.data.message : error.message);
-          });
-
-      } catch (error) {
-        setError('Failed to load user data');
+      if (referrerId) {
+        alert(`You were referred by: ${referrerId}`);
       }
-    }
-  }, [WebApp.initDataUnsafe.user]);
+
+
+      if (WebApp.initDataUnsafe.user) {
+        try {
+          const userData = WebApp.initDataUnsafe.user;
+          setUserData(userData);
+
+          axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', {
+            first_name: userData.first_name,
+            username: userData.username,
+            is_premium: userData.is_premium ? 'Yes' : 'No',
+            referrerId: userData.start_param || null
+          })
+            .then(response => {
+              console.log('User created:', response.data);
+            })
+            .catch(error => {
+              console.error('There was an error creating the user!', error.response ? error.response.data.message : error.message);
+            });
+
+        } catch (error) {
+          setError('Failed to load user data');
+        }
+      }
+    };
+    registerUser();
+  }, []);
 
   useEffect(() => {
     const fetchCoins = async () => {
