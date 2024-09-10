@@ -19,11 +19,22 @@ const Home = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [coins, setCoins] = useState(0);
+  const [referrerId, setReferrerId] = useState(null);
 
   useEffect(() => {
 
-    const searchParams = new URLSearchParams(window.location.search);
-    const referrerId = searchParams.get('startapp');
+    const initData = WebApp.initDataUnsafe;
+    console.log('Telegram WebApp Data:', initData);
+
+    const referrerId = initData.start_param || null;
+
+    console.log('Referral Code:', referrerId);
+
+    setReferrerId(referrerId);
+
+    if (referrerId) {
+      alert(`You were referred by: ${referrerId}`);
+    }
 
 
     if (WebApp.initDataUnsafe.user) {
