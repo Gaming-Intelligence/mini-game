@@ -19,24 +19,23 @@ const Home = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [coins, setCoins] = useState(0);
-  const [referrerId, setReferrerId] = useState(null);
+  const [referralCode, setReferralCode] = useState(null);
+
+  useEffect(() => {
+    const initData = window.Telegram.WebApp.initDataUnsafe;
+
+    // Extract referral code (start_param from Telegram WebApp)
+    const refCode = initData.start_param;
+    if (refCode) {
+      setReferralCode(refCode);
+      alert(`You were referred by code: ${refCode}`);
+    }
+  }, []);
+
 
   useEffect(() => {
 
     const registerUser = async () => {
-
-      const initData = WebApp.initDataUnsafe;
-      console.log('Telegram WebApp Data:', initData);
-
-      const referrerId = initData.start_param || null;
-
-      console.log('Referral Code:', referrerId);
-
-      setReferrerId(referrerId);
-
-      if (referrerId) {
-        alert(`You were referred by: ${referrerId}`);
-      }
 
 
       if (WebApp.initDataUnsafe.user) {
@@ -272,7 +271,7 @@ const Home = () => {
               </div>
             </div>
 
-            {referrerId && <p>Referred by: {referrerId}</p>}
+            {referralCode && <p className="text-xl, text-yellow">Referred by: {referralCode}</p>}
 
             <h1 className="text-l font-bold mb-6">Hello, {userData.username}</h1>
 
