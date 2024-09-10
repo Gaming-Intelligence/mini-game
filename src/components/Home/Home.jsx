@@ -46,7 +46,7 @@ const Home = () => {
           first_name: userData.first_name,
           username: userData.username,
           is_premium: userData.is_premium ? 'Yes' : 'No',
-          referrerId: referrerId || null
+          referrerId: userData.start_param || null
         })
           .then(response => {
             console.log('User created:', response.data);
@@ -267,6 +267,8 @@ const Home = () => {
                 />
               </div>
             </div>
+
+            {referrerId && <p>Referred by: {referrerId}</p>}
 
             <h1 className="text-l font-bold mb-6">Hello, {userData.username}</h1>
 
