@@ -12,6 +12,8 @@ import Friends from './components/Friends/Friends';
 import SplashScreen from './components/SplashScreen/SplashScreen';
 import { KeyProvider } from './components/KeyContext';
 import RegisterPage from './components/RegisterPage';
+import axios from 'axios';
+import WebApp from '@twa-dev/sdk';
 
 function App() {
   const [loading, setLoading] = useState(true);
