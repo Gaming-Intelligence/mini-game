@@ -41,7 +41,7 @@ const RegisterPage = ({ onRegister }) => {
         // Use default referrer code if none is provided
         const dataToSend = {
             ...userData,
-            referrerId: userData.referrerId || 'DEFAULT_REFERRER'
+            referrerId: userData.referrerId || null
         };
 
         onRegister(dataToSend); // Call the registration handler passed from the parent component (App)
