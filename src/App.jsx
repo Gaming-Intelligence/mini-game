@@ -11,9 +11,11 @@ import Layout from './components/Layout';
 import Friends from './components/Friends/Friends';
 import SplashScreen from './components/SplashScreen/SplashScreen';
 import { KeyProvider } from './components/KeyContext';
+import RegisterPage from './components/RegisterPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -23,23 +25,68 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+
+  useEffect(() => {
+
+    const registerUser = async () => {
+
+
+      if (WebApp.initDataUnsafe.user) {
+        try {
+          const userData = WebApp.initDataUnsafe.user;
+
+          axios.post('https://backend-api-iutr.onrender.com/api/user/findUser', {
+            username: userData.username,
+          })
+            .then(response => {
+              console.log('User registered:', response.data.isRegistered);
+              setIsRegistered(response.data.isRegistered);
+            })
+            .catch(error => {
+              console.error('There was an error fetching the user!', error.response ? error.response.data.message : error.message);
+            });
+
+        } catch (error) {
+          setError('Failed to load user data');
+        }
+      }
+    };
+    registerUser();
+  }, []);
+
+  const handleRegister = (userData) => {
+    // Send registration data to the backend
+    axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', userData)
+      .then(() => {
+        setIsRegistered(true); // Mark user as registered
+      })
+      .catch(err => {
+        console.error('Error during registration:', err);
+      });
+  };
+
+
   return (
     <KeyProvider>
       <Router>
         {loading ? (
           <SplashScreen />
         ) : (
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/airdrop" element={<Airdrop />} />
-              <Route path="/game" element={<Game />} />
-              <Route path="/upgrade" element={<Upgrade />} />
-              <Route path="/task" element={<Task />} />
-              <Route path="/full-screen-game" element={<FullScreenGame />} />
-              <Route path="/friends" element={<Friends />} />
-            </Routes>
-          </Layout>
+          isRegistered ? (
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/airdrop" element={<Airdrop />} />
+                <Route path="/game" element={<Game />} />
+                <Route path="/upgrade" element={<Upgrade />} />
+                <Route path="/task" element={<Task />} />
+                <Route path="/full-screen-game" element={<FullScreenGame />} />
+                <Route path="/friends" element={<Friends />} />
+              </Routes>
+            </Layout>
+          ) : (
+            <RegisterPage onRegister={handleRegister} />
+          )
         )}
       </Router>
     </KeyProvider>

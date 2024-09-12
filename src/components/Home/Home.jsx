@@ -19,50 +19,63 @@ const Home = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [coins, setCoins] = useState(0);
-  const [referralCode, setReferralCode] = useState(null);
+  // const [referralCode, setReferralCode] = useState(null);
+
+  // useEffect(() => {
+  //   const initData = window.Telegram.WebApp.initDataUnsafe?.queryId;
+
+  //   // Extract referral code (start_param from Telegram WebApp)
+  //   const refCode = initData;
+  //   if (refCode) {
+  //     setReferralCode(refCode);
+  //     WebApp.showAlert(`You were referred by code: ${refCode}`);
+  //   }
+  // }, []);
+
+
+  // useEffect(() => {
+
+  //   const registerUser = async () => {
+
+
+  //     if (WebApp.initDataUnsafe.user) {
+  //       try {
+  //         const userData = WebApp.initDataUnsafe.user;
+  //         setUserData(userData);
+
+  //         axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', {
+  //           first_name: userData.first_name,
+  //           username: userData.username,
+  //           is_premium: userData.is_premium ? 'Yes' : 'No',
+  //           referrerId: referralCode || null
+  //         })
+  //           .then(response => {
+  //             console.log('User created:', response.data);
+  //           })
+  //           .catch(error => {
+  //             console.error('There was an error creating the user!', error.response ? error.response.data.message : error.message);
+  //           });
+
+  //       } catch (error) {
+  //         setError('Failed to load user data');
+  //       }
+  //     }
+  //   };
+  //   registerUser();
+  // }, []);
 
   useEffect(() => {
-    const initData = window.Telegram.WebApp.initDataUnsafe?.queryId;
-
-    // Extract referral code (start_param from Telegram WebApp)
-    const refCode = initData;
-    if (refCode) {
-      setReferralCode(refCode);
-      WebApp.showAlert(`You were referred by code: ${refCode}`);
-    }
-  }, []);
-
-
-  useEffect(() => {
-
-    const registerUser = async () => {
-
-
-      if (WebApp.initDataUnsafe.user) {
-        try {
-          const userData = WebApp.initDataUnsafe.user;
-          setUserData(userData);
-
-          axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', {
-            first_name: userData.first_name,
-            username: userData.username,
-            is_premium: userData.is_premium ? 'Yes' : 'No',
-            referrerId: referralCode || null
-          })
-            .then(response => {
-              console.log('User created:', response.data);
-            })
-            .catch(error => {
-              console.error('There was an error creating the user!', error.response ? error.response.data.message : error.message);
-            });
-
-        } catch (error) {
-          setError('Failed to load user data');
-        }
+    if (WebApp.initDataUnsafe.user) {
+      try {
+        const userData = WebApp.initDataUnsafe.user;
+        setUserData(userData);
+      } catch (error) {
+        setError('Failed to load user data');
       }
-    };
-    registerUser();
-  }, []);
+    }
+  }, [WebApp.initDataUnsafe.user]);
+
+
 
   useEffect(() => {
     const fetchCoins = async () => {
@@ -271,7 +284,7 @@ const Home = () => {
               </div>
             </div>
 
-            {referralCode && <p className="text-xl, text-yellow">Referred by: {referralCode}</p>}
+            {/* {referralCode && <p className="text-xl, text-yellow">Referred by: {referralCode}</p>} */}
 
             <h1 className="text-l font-bold mb-6">Hello, {userData.username}</h1>
 
