@@ -9,6 +9,7 @@ import airdropIcon from '/src/assets/airdropIcon.png';
 import gameIcon from '/src/assets/gameIcon.png';
 import taskIcon from '/src/assets/taskIcon.png';
 import upgradeIcon from '/src/assets/upgradeIcon.png';
+import friendsIcon from '/src/assets/friendsIcon.png';
 import Upgrade from '../Upgrade/Upgrade';
 
 const Navbar = () => {
@@ -25,8 +26,8 @@ const Navbar = () => {
         to="/airdrop"
         className="flex flex-col items-center transition-transform duration-200 ease-in-out text-sm md:text-base px-4 py-2"
       >
-        <img src={airdropIcon} alt="Airdrop" className="h-6 w-6 mb-1" />
-        Airdrop
+        <img src={friendsIcon} alt="Airdrop" className="h-6 w-6 mb-1" />
+        Friends
       </Link>
       <Link
         to="/game"

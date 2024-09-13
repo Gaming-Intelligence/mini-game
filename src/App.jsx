@@ -8,7 +8,7 @@ import FullScreenGame from './components/FullScreenGame/FullScreenGame';
 import Task from './components/Task/Task';
 import Upgrade from './components/Upgrade/Upgrade';
 import Layout from './components/Layout';
-import Friends from './components/Friends/Friends';
+// import Friends from './components/Friends/Friends';
 import SplashScreen from './components/SplashScreen/SplashScreen';
 import { KeyProvider } from './components/KeyContext';
 import RegisterPage from './components/RegisterPage';
@@ -44,7 +44,7 @@ function App() {
           setUserData(userData);
 
           await axios.post('https://backend-api-iutr.onrender.com/api/user/findUser', {
-            username: userData.username,
+            username: 'PROPHETCYCO',
           })
             .then(response => {
               console.log('User registered:', response.data.isRegistered);
@@ -79,7 +79,7 @@ function App() {
                 <Route path="/upgrade" element={<Upgrade />} />
                 <Route path="/task" element={<Task />} />
                 <Route path="/full-screen-game" element={<FullScreenGame />} />
-                <Route path="/friends" element={<Friends />} />
+                {/* <Route path="/friends" element={<Friends />} /> */}
               </Routes>
             </Layout>
           ) : (

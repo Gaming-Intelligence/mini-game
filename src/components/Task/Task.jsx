@@ -8,11 +8,13 @@ import image4 from '/src/assets/metallic_insta_logo.png';
 import tasksIcon from '/src/assets/tasksIcon.png';
 import friendsIcon from '/src/assets/friendsIcon.png';
 import image5 from '/src/assets/metallic_youtube_logo.png';
+import completedIcon from '/src/assets/completedIcon.png';
 import WebApp from '@twa-dev/sdk';
 
 const Task = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
+  const [completedTasks, setCompletedTasks] = useState([]);
 
   const buttons = [
     { image: image5, text: 'Youtube  (1000 GIP)', link: 'https://youtube.com/@gamingintelligence_gi', taskName: 'youtube' },
@@ -51,6 +53,7 @@ const Task = () => {
 
       if (response.status === 200) {
         console.log(`Task ${task.taskName} completed successfully!`);
+        setCompletedTasks(prev => [...prev, task.taskName]);
         setTimeout(() => {
           window.open(task.link, '_blank'); // Open the link in a new tab
         }, 500);
@@ -67,7 +70,7 @@ const Task = () => {
   return (
     <div className='min-h-screen'>
       {/* Top Navbar */}
-      <nav className="bg-white p-4 flex space-x-4 justify-center">
+      {/* <nav className="bg-white p-4 flex space-x-4 justify-center">
         <NavLink
           to="/task"
           className={({ isActive }) =>
@@ -90,7 +93,7 @@ const Task = () => {
           <img src={friendsIcon} alt="Friends Icon" className="w-6 h-6" />
           <span>Friends</span>
         </NavLink>
-      </nav>
+      </nav> */}
 
       {/* Task Page Content */}
       <div className="p-4">
@@ -107,7 +110,11 @@ const Task = () => {
             >
               <img src={button.image} alt={button.text} className="w-12 h-12 mr-4" />
               <span className="flex-grow text-center text-yellow">{button.text}</span>
-              <img src={arrowIcon} alt="Arrow Icon" className="w-7 h-7" />
+              <img
+                src={completedTasks.includes(button.taskName) ? completedIcon : arrowIcon}
+                alt="Task Icon"
+                className="w-7 h-7"
+              />
             </a>
           ))}
         </div>

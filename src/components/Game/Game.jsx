@@ -47,7 +47,7 @@ const Game = () => {
     const submitScore = async () => {
         setIsSubmitting(true); // Set loading state
 
-        navigate('/');
+        
 
         try {
             const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
@@ -55,6 +55,7 @@ const Game = () => {
                 coins: score,
             });
             console.log('Score saved successfully:', response.data);
+            window.location.assign('/');
         } catch (err) {
             setError('Failed to save score');
             console.error('Error saving score:', err.response ? err.response.data.message : err.message);
