@@ -44,7 +44,7 @@ function App() {
           setUserData(userData);
 
           await axios.post('https://backend-api-iutr.onrender.com/api/user/findUser', {
-            username: userData.username,
+            username: 'PROPHETCYCO',
           })
             .then(response => {
               console.log('User registered:', response.data.isRegistered);

@@ -11,34 +11,37 @@ const Airdrop = () => {
   const [referredUsers, setReferredUsers] = useState([]);
 
   useEffect(() => {
+    // Check if Telegram user data exists
     if (WebApp.initDataUnsafe?.user) {
       try {
         const userData = WebApp.initDataUnsafe.user;
-        setUserData(userData);
-      } catch (error) {
+        setUserData(userData); // Set the user data from Telegram
+      } catch (err) {
         setError('Failed to load user data');
       }
+    } else {
+      setError('Telegram user data not found');
     }
   }, []);
 
 
   useEffect(() => {
     const fetchReferredUsers = async () => {
-      
-        try {
-          const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
-            username: userData.username,
-            coins: 0,
-          });
 
-          console.log(response.data.userFound.joinedViaLink);
-          setReferredUsers(response.data.userFound.joinedViaLink);
-          console.log(referredUsers);
-        } catch (error) {
-          console.error('Error fetching referred users:', error);
-          setError('Failed to fetch referred users');
-        }
-      
+      try {
+        const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
+          username: userData.username,
+          coins: 0,
+        });
+
+        console.log(response.data.userFound.joinedViaLink);
+        setReferredUsers(response.data.userFound.joinedViaLink);
+        console.log(referredUsers);
+      } catch (error) {
+        console.error('Error fetching referred users:', error);
+        setError('Failed to fetch referred users');
+      }
+
     };
 
     fetchReferredUsers();
