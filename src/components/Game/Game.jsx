@@ -6,11 +6,30 @@ import key from '/src/assets/keys.png';
 import gameIcon from '/src/assets/game_start.png';
 import { KeyContext } from '../KeyContext'; // Import KeyContext
 import animationData from '/src/assets/game_over_animation.json';
+import axios from 'axios'; // Import axios for API calls
+import WebApp from '@twa-dev/sdk';
 
 const Game = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [score, setScore] = useState(location.state?.score || 0);
+    const [error, setError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        // Check if Telegram user data exists
+        if (WebApp.initDataUnsafe?.user) {
+            try {
+                const userData = WebApp.initDataUnsafe.user;
+                setUserData(userData); // Set the user data from Telegram
+            } catch (err) {
+                setError('Failed to load user data');
+            }
+        } else {
+            setError('Telegram user data not found');
+        }
+    }, []);
 
     // Use keys from the global context
     const { keys, setKeys, generateKeys } = useContext(KeyContext);
@@ -24,14 +43,32 @@ const Game = () => {
         }
     };
 
+    // Function to submit the score to the backend
+    const submitScore = async () => {
+        setIsSubmitting(true); // Set loading state
+
+        try {
+            const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
+                username: userData.username,
+                coins: score,
+            });
+            console.log('Score saved successfully:', response.data);
+        } catch (err) {
+            setError('Failed to save score');
+            console.error('Error saving score:', err.response ? err.response.data.message : err.message);
+        } finally {
+            setIsSubmitting(false); // Reset loading state
+        }
+    };
+
     const defaultOptions = {
         loop: true,
         autoplay: true,
         animationData: animationData,
         rendererSettings: {
-          preserveAspectRatio: 'xMidYMid slice',
+            preserveAspectRatio: 'xMidYMid slice',
         }
-      };
+    };
 
     return (
         <div className="p-4 md:p-8 flex flex-col min-h-screen text-yellow">
@@ -48,7 +85,20 @@ const Game = () => {
                 {score > 0 && (
                     <div className="score-display pt-4">
                         <h2 className='mb-6'>Final Score: {score}</h2>
-                        <Lottie options={defaultOptions} height={200} width={200}  />
+                        <Lottie options={defaultOptions} height={200} width={200} />
+
+                        {/* Display submit button after score is shown */}
+                        <div className="mt-6">
+                            <button
+                                onClick={submitScore}
+                                className={`bg-green-500 text-white px-8 py-2 rounded-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                disabled={isSubmitting} // Disable button when submitting
+                            >
+                                {isSubmitting ? 'Submitting...' : 'Submit Score'}
+                            </button>
+                        </div>
+
+                        {error && <p className="text-red-500 mt-4">{error}</p>}
                     </div>
                 )}
             </div>

@@ -30,8 +30,10 @@ const RegisterPage = () => {
 
     // Handle user registration
     const handleRegister = async () => {
-        if (!userData) return;
+        
         navigate('/');
+
+
         try {
             // Send user data to the backend
             const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', {
