@@ -27,7 +27,7 @@ const Airdrop = () => {
       
         try {
           const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
-            username: 'PROPHETCYCO',
+            username: userData.username,
             coins: 0,
           });
 
