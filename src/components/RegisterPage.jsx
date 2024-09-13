@@ -30,8 +30,8 @@ const RegisterPage = () => {
 
     // Handle user registration
     const handleRegister = async () => {
-        
-        navigate('/');
+
+
 
 
         try {
@@ -43,9 +43,11 @@ const RegisterPage = () => {
                 referrerId: referrerId || null, // Send referrerId if available, otherwise null
             });
             console.log('User created:', response.data);
+            window.location.assign('/');
+            // navigate('/');
 
             // Navigate to the home page after successful registration
-            
+
         } catch (error) {
             console.error('There was an error creating the user!', error.response ? error.response.data.message : error.message);
         }

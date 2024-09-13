@@ -37,7 +37,7 @@ const Friends = () => {
 
       console.log(response.data.userFound)
 
-      setReferralLink(response.data.userFound.refferalLink);
+      setReferralLink(response.data.userFound.refferalCode);
     } catch (error) {
       console.error('Error fetching referral link:', error.response ? error.response.data.message : error.message);
     }
@@ -46,7 +46,7 @@ const Friends = () => {
 
     if (referralLink) {
 
-      const message = encodeURIComponent(`Hey! Use my referral link to join: ${referralLink}`);
+      const message = encodeURIComponent(`Hey! Use my referral code to join: ${referralLink}`);
       const telegramUrl = `https://t.me/share/url?url=${referralLink}&text=${message}`;
 
 

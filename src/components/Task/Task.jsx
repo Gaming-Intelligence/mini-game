@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import arrowIcon from '/src/assets/up-arrow.png';
 import image2 from '/src/assets/metallic_twitter_logo.png';
@@ -7,8 +7,12 @@ import image4 from '/src/assets/metallic_insta_logo.png';
 import tasksIcon from '/src/assets/tasksIcon.png';
 import friendsIcon from '/src/assets/friendsIcon.png';
 import image5 from '/src/assets/metallic_youtube_logo.png';
+import WebApp from '@twa-dev/sdk';
 
 const Task = () => {
+
+  const [userData, setUserData] = useState(null);
+
   const buttons = [
     { image: image5, text: 'Youtube  (1000 GIP)', link: 'https://youtube.com/@gamingintelligence_gi', taskName: 'youtube' },
     { image: image2, text: 'Twitter  (1000 GIP)', link: 'https://x.com/GI_Token_', taskName: 'twitter' },
@@ -16,6 +20,20 @@ const Task = () => {
     { image: image4, text: 'Instagram  (1000 GIP)', link: 'https://www.instagram.com/gaming_intelligence', taskName: 'instagram' },
     // Add more buttons as needed
   ];
+
+  useEffect(() => {
+    // Check if Telegram user data exists
+    if (WebApp.initDataUnsafe?.user) {
+      try {
+        const userData = WebApp.initDataUnsafe.user;
+        setUserData(userData); // Set the user data from Telegram
+      } catch (err) {
+        setError('Failed to load user data');
+      }
+    } else {
+      setError('Telegram user data not found');
+    }
+  }, []);
 
   // const handleTaskClick = async (task) => {
   //   try {
@@ -35,6 +53,26 @@ const Task = () => {
   //     alert('An error occurred while completing the task.');
   //   }
   // };
+
+  const handleTaskClick = async (task) => {
+    try {
+
+      const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveTask', {
+        username: userData.username,
+        taskName: task.taskName,
+      });
+
+      if (response.status === 200) {
+        console.log(`Task ${task.taskName} completed successfully!`);
+
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error completing task:', error);
+      alert('An error occurred while completing the task.');
+    }
+  };
 
   return (
     <div className='min-h-screen'>
@@ -74,6 +112,7 @@ const Task = () => {
               href={button.link}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => handleTaskClick(button)}
               className="flex items-center bg-lightblue bg-navy text-xl py-4 px-6 rounded-lg w-full shadow-lg transition duration-300"
             >
               <img src={button.image} alt={button.image} className="w-12 h-12 mr-4" />

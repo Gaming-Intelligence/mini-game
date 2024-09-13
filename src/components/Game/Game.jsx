@@ -47,6 +47,8 @@ const Game = () => {
     const submitScore = async () => {
         setIsSubmitting(true); // Set loading state
 
+        navigate('/');
+
         try {
             const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
                 username: userData.username,
