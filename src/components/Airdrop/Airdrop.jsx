@@ -74,7 +74,8 @@ const Airdrop = () => {
 
   const handleCopyLink = () => {
     if (referralLink) {
-      navigator.clipboard.writeText(telegramUrl)
+      const message = encodeURIComponent(`Hey! Use my referral code to join: ${referralLink}`);
+      navigator.clipboard.writeText(`https://t.me/gi_bubble_blaster_bot&text=${message}`)
         .then(() => {
           alert('Referral link copied to clipboard!');
         })
