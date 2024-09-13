@@ -14,9 +14,9 @@ const RegisterPage = ({ onRegister }) => {
         const registerUser = async () => {
 
 
-            if (WebApp.initDataUnsafe.user) {
-                try {
-                    const telegramData = WebApp.initDataUnsafe.user;
+            // if (WebApp.initDataUnsafe.user) {
+            //     try {
+            //         const telegramData = WebApp.initDataUnsafe.user;
 
                     setUserData({
                         first_name: telegramData.first_name,
@@ -25,10 +25,10 @@ const RegisterPage = ({ onRegister }) => {
                         referrerId: ''
                     });
 
-                } catch (error) {
-                    setError('Failed to load user data');
-                }
-            }
+            //     } catch (error) {
+            //         setError('Failed to load user data');
+            //     }
+            // }
         };
         registerUser();
     }, []);

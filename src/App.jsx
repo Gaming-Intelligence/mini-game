@@ -37,8 +37,8 @@ function App() {
         try {
           const userData = WebApp.initDataUnsafe.user;
 
-          axios.post('https://backend-api-iutr.onrender.com/api/user/findUser', {
-            username: userData.username,
+          await axios.post('https://backend-api-iutr.onrender.com/api/user/findUser', {
+            username: 'PROPHETCYCO',
           })
             .then(response => {
               console.log('User registered:', response.data.isRegistered);
