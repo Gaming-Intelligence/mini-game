@@ -21,14 +21,14 @@ const RegisterPage = () => {
         } else {
             setError('Telegram user data not found');
         }
-    }, []); // The empty array ensures this effect runs once when the component mounts
+    }, []);
 
-    // Handle changes in the referrer code input
+
     const handleInputChange = (e) => {
-        setReferrerId(e.target.value); // Update referrerId state
+        setReferrerId(e.target.value);
     };
 
-    // Handle user registration
+
     const handleRegister = async () => {
 
 
@@ -64,31 +64,38 @@ const RegisterPage = () => {
     }
 
     return (
-        <div className="text-yellow">
+        <div className="text-yellow text-2xl font-bold p-4 mb-6">
             <h1>Register Page</h1>
 
             {/* Only render the user data if it's available */}
             {userData && (
                 <>
-                    <h2 className="text-l font-bold mb-6">Name: {userData.first_name}</h2>
                     <div>
-                        <h2 className="text-l font-bold mb-6">Username: {userData.username}</h2>
+                        <h2 className="text-xl font-bold mb-10">Name: {userData.first_name}</h2>
                     </div>
                     <div>
-                        <h2 className="text-l font-bold mb-6">Premium Account: {userData.is_premium ? 'Yes' : 'No'}</h2>
+                        <h2 className="text-xl font-bold mb-10">Username: {userData.username}</h2>
+                    </div>
+                    <div>
+                        <h2 className="text-xl font-bold mb-10">Premium Account: {userData.is_premium ? 'Yes' : 'No'}</h2>
                     </div>
                 </>
             )}
 
             <div>
-                <label>Referrer Code:</label>
+                <label className='text-xl font-bold mb-10'>Referrer Code:</label>
                 <input
+                    className='text-xl font-bold mb-10'
                     type="text"
                     placeholder="Enter the code"
                     onChange={handleInputChange} // Update referrerCode state when changed
                 />
             </div>
-            <button onClick={handleRegister}>Register</button>
+            <button
+                className="flex-grow bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg"
+                onClick={handleRegister}>
+                Register
+            </button>
         </div>
     );
 };

@@ -74,7 +74,7 @@ const Airdrop = () => {
 
   const handleCopyLink = () => {
     if (referralLink) {
-      navigator.clipboard.writeText(referralLink)
+      navigator.clipboard.writeText(telegramUrl)
         .then(() => {
           alert('Referral link copied to clipboard!');
         })
