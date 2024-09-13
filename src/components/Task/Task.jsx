@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
 import axios from 'axios'; // Import axios for API calls
 import arrowIcon from '/src/assets/up-arrow.png';
 import image2 from '/src/assets/metallic_twitter_logo.png';
@@ -23,8 +22,8 @@ const Task = () => {
     { image: image4, text: 'Instagram  (1000 GIP)', link: 'https://www.instagram.com/gaming_intelligence', taskName: 'instagram' },
   ];
 
+  // Save user data if available
   useEffect(() => {
-    // Check if Telegram user data exists
     if (WebApp.initDataUnsafe?.user) {
       try {
         const userData = WebApp.initDataUnsafe.user;
@@ -34,6 +33,14 @@ const Task = () => {
       }
     } else {
       setError('Telegram user data not found');
+    }
+  }, []);
+
+  // Load completed tasks from localStorage on component mount
+  useEffect(() => {
+    const savedTasks = localStorage.getItem('completedTasks');
+    if (savedTasks) {
+      setCompletedTasks(JSON.parse(savedTasks)); // Parse and set the tasks from localStorage
     }
   }, []);
 
@@ -53,11 +60,15 @@ const Task = () => {
 
       if (response.status === 200) {
         console.log(`Task ${task.taskName} completed successfully!`);
-        setCompletedTasks(prev => [...prev, task.taskName]);
+
+        // Update the state and localStorage
+        const updatedTasks = [...completedTasks, task.taskName];
+        setCompletedTasks(updatedTasks);
+        localStorage.setItem('completedTasks', JSON.stringify(updatedTasks)); // Save updated tasks to localStorage
+
         setTimeout(() => {
           window.open(task.link, '_blank'); // Open the link in a new tab
         }, 500);
-        // Optionally, you can navigate or update the UI here
       } else {
         alert(response.data.message);
       }
@@ -69,33 +80,6 @@ const Task = () => {
 
   return (
     <div className='min-h-screen'>
-      {/* Top Navbar */}
-      {/* <nav className="bg-white p-4 flex space-x-4 justify-center">
-        <NavLink
-          to="/task"
-          className={({ isActive }) =>
-            isActive
-              ? "text-navy font-bold bg-lightblue py-2 px-4 rounded flex items-center space-x-2"
-              : "text-gray-500 font-bold py-2 px-4 rounded flex items-center space-x-2"
-          }
-        >
-          <img src={tasksIcon} alt="Tasks Icon" className="w-6 h-6" />
-          <span>Tasks</span>
-        </NavLink>
-        <NavLink
-          to="/friends"
-          className={({ isActive }) =>
-            isActive
-              ? "text-navy font-bold bg-lightblue py-2 px-4 rounded flex items-center space-x-2"
-              : "text-gray-500 font-bold py-2 px-4 rounded flex items-center space-x-2"
-          }
-        >
-          <img src={friendsIcon} alt="Friends Icon" className="w-6 h-6" />
-          <span>Friends</span>
-        </NavLink>
-      </nav> */}
-
-      {/* Task Page Content */}
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-6 text-yellow">Tasks</h1>
         <div className="space-y-4">
