@@ -51,6 +51,9 @@ const Task = () => {
 
       if (response.status === 200) {
         console.log(`Task ${task.taskName} completed successfully!`);
+        setTimeout(() => {
+          window.open(task.link, '_blank'); // Open the link in a new tab
+        }, 500);
         // Optionally, you can navigate or update the UI here
       } else {
         alert(response.data.message);
