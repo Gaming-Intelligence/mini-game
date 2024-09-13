@@ -20,6 +20,8 @@ function App() {
   const [isRegistered, setIsRegistered] = useState(false);
   const [userData, setUserData] = useState(null);
 
+
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -27,6 +29,8 @@ function App() {
 
     return () => clearTimeout(timer);
   }, []);
+
+
 
 
   useEffect(() => {
@@ -57,17 +61,7 @@ function App() {
     };
     registerUser();
   }, []);
-
-  const handleRegister = (userData) => {
-    // Send registration data to the backend
-    axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', userData)
-      .then(() => {
-        setIsRegistered(true); // Mark user as registered
-      })
-      .catch(err => {
-        console.error('Error during registration:', err);
-      });
-  };
+  
 
 
   return (
@@ -89,7 +83,7 @@ function App() {
               </Routes>
             </Layout>
           ) : (
-            <RegisterPage onRegister={handleRegister} />
+            <RegisterPage />
           )
         )}
       </Router>

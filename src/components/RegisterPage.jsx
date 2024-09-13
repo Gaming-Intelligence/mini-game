@@ -1,74 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import WebApp from '@twa-dev/sdk';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const RegisterPage = ({ onRegister }) => {
-    const [userData, setUserData] = useState({
-        first_name: '',
-        username: '',
-        is_premium: '',
-        referrerId: ''
-    });
+    const [userData, setUserData] = useState(null);
+    const [referrerId, setReferrerId] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
+        if (WebApp.initDataUnsafe.user) {
+            try {
+                const userData = WebApp.initDataUnsafe.user;
+                setUserData(userData);
+            } catch (error) {
+                setError('Failed to load user data');
+            }
+        }
+    }, [WebApp.initDataUnsafe.user]);
 
-        const registerUser = async () => {
-
-
-            // if (WebApp.initDataUnsafe.user) {
-            //     try {
-            //         const telegramData = WebApp.initDataUnsafe.user;
-
-                    setUserData({
-                        first_name: telegramData.first_name,
-                        username: telegramData.username,
-                        is_premium: telegramData.is_premium ? 'Yes' : 'No',
-                        referrerId: ''
-                    });
-
-            //     } catch (error) {
-            //         setError('Failed to load user data');
-            //     }
-            // }
-        };
-        registerUser();
-    }, []);
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     const handleInputChange = (e) => {
-        setUserData({ ...userData, [e.target.name]: e.target.value });
+        setReferrerId(e.target.value); // Update the referrerCode state
     };
 
-    const handleRegister = () => {
-        // Use default referrer code if none is provided
-        const dataToSend = {
-            ...userData,
-            referrerId: userData.referrerId || null
-        };
 
-        onRegister(dataToSend); // Call the registration handler passed from the parent component (App)
-    };
+    const handleRegister = async () => {
+        axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', {
+            first_name: userData.first_name,
+            username: userData.username,
+            is_premium: userData.is_premium ? 'Yes' : 'No',
+            referrerId: referrerId || null
+          })
+            .then(response => {
+              console.log('User created:', response.data);
+              Navigate('/');
+            })
+            .catch(error => {
+              console.error('There was an error creating the user!', error.response ? error.response.data.message : error.message);
+            });
+      };
+
+    
 
     return (
         <div className='text-yellow'>
-            <h2>Register Page</h2>
+            <h1>Register Page</h1>
             <div>
-                <label>First Name:</label>
-                <input type="text" value={userData.first_name} readOnly />
+                <h2 className="text-l font-bold mb-6">Name, {userData.first_name}</h2>
             </div>
             <div>
-                <label>Username:</label>
-                <input type="text" value={userData.username} readOnly />
+                <h2 className="text-l font-bold mb-6">Username, {userData.username}</h2>
             </div>
             <div>
-                <label>Is Premium:</label>
-                <input type="text" value={userData.is_premium} readOnly />
+                <h2 className="text-l font-bold mb-6">Premium Account, {userData.is_premium}</h2>
             </div>
             <div>
                 <label>Referrer Code:</label>
                 <input
                     type="text"
-                    name="referrerCode"
-                    value={userData.referrerId}
-                    onChange={handleInputChange}
+                    placeholder='Enter the code'
+                    onChange={handleInputChange} // Update referrerCode state when changed
                 />
             </div>
             <button onClick={handleRegister}>Register</button>
