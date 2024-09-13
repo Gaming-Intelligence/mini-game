@@ -18,6 +18,7 @@ import WebApp from '@twa-dev/sdk';
 function App() {
   const [loading, setLoading] = useState(true);
   const [isRegistered, setIsRegistered] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,6 +37,7 @@ function App() {
       if (WebApp.initDataUnsafe.user) {
         try {
           const userData = WebApp.initDataUnsafe.user;
+          setUserData(userData);
 
           await axios.post('https://backend-api-iutr.onrender.com/api/user/findUser', {
             username: userData.username,
