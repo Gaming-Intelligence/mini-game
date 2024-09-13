@@ -32,9 +32,8 @@ const Airdrop = () => {
   useEffect(() => {
     const fetchReferredUsers = async () => {
       try {
-        const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
+        const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/findUserDetails', {
           username: userData.username,
-          coins: 0,
         });
 
         console.log(response.data.userFound.joinedViaLink);
