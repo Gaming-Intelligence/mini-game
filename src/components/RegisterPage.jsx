@@ -30,7 +30,8 @@ const RegisterPage = () => {
 
     // Handle user registration
     const handleRegister = async () => {
-        if (!userData) return; // Check if userData is available before proceeding
+        if (!userData) return;
+        navigate('/');
         try {
             // Send user data to the backend
             const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', {
@@ -42,7 +43,7 @@ const RegisterPage = () => {
             console.log('User created:', response.data);
 
             // Navigate to the home page after successful registration
-            navigate('/');
+            
         } catch (error) {
             console.error('There was an error creating the user!', error.response ? error.response.data.message : error.message);
         }
