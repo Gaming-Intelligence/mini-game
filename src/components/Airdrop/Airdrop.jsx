@@ -18,33 +18,32 @@ const Airdrop = () => {
   }, [userData, referralLink, referredUsers]);
 
   useEffect(() => {
-    if (WebApp.initDataUnsafe.user) {
-      try {
-        const userData = WebApp.initDataUnsafe.user;
-        setUserData(userData);
-      } catch (error) {
-        setError('Failed to load user data');
-      }
-    }
-  }, [WebApp.initDataUnsafe.user]);
+
+    const registerUser = async () => {
 
 
-  useEffect(() => {
-    const fetchReferredUsers = async () => {
-      try {
-        const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/findUserDetails', {
-          username: userData.username,
-        });
+      if (WebApp.initDataUnsafe.user) {
+        try {
+          const userData = WebApp.initDataUnsafe.user;
+          setUserData(userData);
 
-        console.log(response.data.userFound.joinedViaLink);
-        setReferredUsers(response.data.userFound.joinedViaLink);
-      } catch (error) {
-        console.error('Error fetching referred users:', error);
-        setError('Failed to fetch referred users');
+          await axios.post('https://backend-api-iutr.onrender.com/api/user/findUserDetails', {
+            username: userData.username,
+          })
+            .then(response => {
+              console.log('User registered:', response.data.userFound);
+              setReferredUsers(response.data.userFound.joinedViaLink);
+            })
+            .catch(error => {
+              console.error('There was an error fetching the user!', error.response ? error.response.data.message : error.message);
+            });
+
+        } catch (error) {
+          setError('Failed to load user data');
+        }
       }
     };
-
-    fetchReferredUsers();
+    registerUser();
   }, []);
 
   // Improved error handling - Don't hide the whole page on error
