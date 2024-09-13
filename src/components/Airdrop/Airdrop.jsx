@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Lottie from "react-lottie";
-import axios from 'axios'; // Make sure axios is imported
+import axios from 'axios';
 import animationData from '/src/assets/animation5.json';
-import WebApp from '@twa-dev/sdk'; // Assuming you are using WebApp SDK
+import WebApp from '@twa-dev/sdk';
 
 const Airdrop = () => {
   const [referralLink, setReferralLink] = useState('');
@@ -10,24 +10,27 @@ const Airdrop = () => {
   const [error, setError] = useState(null);
   const [referredUsers, setReferredUsers] = useState([]);
 
+  // Log state for debugging
   useEffect(() => {
-    // Check if Telegram user data exists
-    if (WebApp.initDataUnsafe?.user) {
+    console.log("userData:", userData);
+    console.log("referralLink:", referralLink);
+    console.log("referredUsers:", referredUsers);
+  }, [userData, referralLink, referredUsers]);
+
+  useEffect(() => {
+    if (WebApp.initDataUnsafe.user) {
       try {
         const userData = WebApp.initDataUnsafe.user;
-        setUserData(userData); // Set the user data from Telegram
-      } catch (err) {
+        setUserData(userData);
+      } catch (error) {
         setError('Failed to load user data');
       }
-    } else {
-      setError('Telegram user data not found');
     }
-  }, []);
+  }, [WebApp.initDataUnsafe.user]);
 
 
   useEffect(() => {
     const fetchReferredUsers = async () => {
-
       try {
         const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
           username: userData.username,
@@ -36,28 +39,24 @@ const Airdrop = () => {
 
         console.log(response.data.userFound.joinedViaLink);
         setReferredUsers(response.data.userFound.joinedViaLink);
-        console.log(referredUsers);
       } catch (error) {
         console.error('Error fetching referred users:', error);
         setError('Failed to fetch referred users');
       }
-
     };
 
     fetchReferredUsers();
   }, []);
 
-
-
-
+  // Improved error handling - Don't hide the whole page on error
   if (error) {
-    return <div>Error: {error}</div>;
+    console.error(error);
   }
 
   const handleInviteClick = async () => {
     try {
       const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
-        username: 'PROPHETCYCO',
+        username: userData.username,
         coins: 0,
       });
 
@@ -117,8 +116,6 @@ const Airdrop = () => {
         <div className="p-4">
           <h2 className="text-2xl font-bold mb-6">Referred Users</h2>
 
-          {error && <p className="text-red-500">{error}</p>}
-
           {referredUsers.length > 0 ? (
             <ul>
               {referredUsers.map((user, index) => (
@@ -129,10 +126,11 @@ const Airdrop = () => {
             <p>No users have joined using your referral link yet.</p>
           )}
         </div>
-
       </div>
+
+      {error && <div className="text-red-500 mt-4">Error: {error}</div>}
     </div>
   );
-}
+};
 
 export default Airdrop;
