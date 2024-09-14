@@ -258,7 +258,7 @@ const Home = () => {
   };
 
   return (
-    <main className="p-4 mb-10 text-yellow">
+    <main className="p-4 mb-10 text-black">
       {userData ? (
         <>
           <div className="w-full h-full px-4 py-2">
@@ -309,7 +309,7 @@ const Home = () => {
                   height: '50px',
                   border: '2px solid #000',
                   borderRadius: '25px',
-                  backgroundColor: '#FFFFFF',
+                  backgroundColor: '#f0f0f0',
                   overflow: 'hidden',
                 }}
               >
