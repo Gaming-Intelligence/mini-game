@@ -320,7 +320,7 @@ const Home = () => {
                     left: 0,
                     height: '100%',
                     width: getWaterWidth(),
-                    backgroundColor: '#76c7c0',
+                    backgroundColor: '#03ff00',
                     transition: 'none',
                   }}
                 />
@@ -333,7 +333,7 @@ const Home = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    backgroundColor: 'rgb(3, 255, 0)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
                     border: 'none',
                     color: '#000',
                     fontSize: '16px',
