@@ -285,7 +285,7 @@ const Home = () => {
 
             {/* {referralCode && <p className="text-xl, text-yellow">Referred by: {referralCode}</p>} */}
 
-            <h1 className="text-l font-bold mb-6">Hello, {userData.username}</h1>
+            <h1 className="text-xl font-bold mb-6">Hello, {userData.username}</h1>
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
