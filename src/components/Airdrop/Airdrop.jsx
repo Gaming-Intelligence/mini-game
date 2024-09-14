@@ -33,6 +33,7 @@ const Airdrop = () => {
             .then(response => {
               console.log('User registered:', response.data.userFound);
               setReferredUsers(response.data.userFound.joinedViaLink);
+              setReferralLink(response.data.userFound.refferalCode);
             })
             .catch(error => {
               console.error('There was an error fetching the user!', error.response ? error.response.data.message : error.message);
