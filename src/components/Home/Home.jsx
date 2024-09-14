@@ -291,7 +291,7 @@ const Home = () => {
               <h2 className="text-xl font-semibold text-mud">GI Points</h2>
               {coins && (
                 <div>
-                  <p className="text-3xl font-bold text-yellow">{coins.coins}</p> {/* Adjust this according to the structure of the API response */}
+                  <p className="text-3xl font-bold text-glow_orange">{coins.coins}</p> {/* Adjust this according to the structure of the API response */}
                 </div>
               )}
             </div>

@@ -25,6 +25,7 @@ export default {
         silver:'#c2c2c2',
         orange:'#ffa701',
         mud: '#e3f542',
+        glow_orange: '#f27128',
       },
     },
   },
