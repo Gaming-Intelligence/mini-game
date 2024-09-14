@@ -55,7 +55,7 @@ const Game = () => {
                 coins: score,
             });
             console.log('Score saved successfully:', response.data);
-            window.location.assign('/');
+            navigate('/');
         } catch (err) {
             setError('Failed to save score');
             console.error('Error saving score:', err.response ? err.response.data.message : err.message);

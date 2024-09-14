@@ -19,6 +19,7 @@ const Home = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [coins, setCoins] = useState(0);
+  const [isCoinsUpdated, setIsCoinsUpdated] = useState(false);
   // const [referralCode, setReferralCode] = useState(null);
 
   // useEffect(() => {
@@ -77,26 +78,23 @@ const Home = () => {
 
 
 
+  const fetchCoins = async () => {
+    if (!userData) return; // Exit if userData is not available
+
+    try {
+      const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/findCoins", {
+        username: userData.username,
+      });
+      setCoins(response.data); // Assuming response.data contains the coins object
+    } catch (error) {
+      console.error('Error collecting coins:', error.response ? error.response.data.message : error.message);
+      setError(error.response ? error.response.data.message : error.message);
+    }
+  };
+
   useEffect(() => {
-    const fetchCoins = async () => {
-      if (!userData) return; // Exit if userData is not available
-
-      try {
-        const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/findCoins", {
-          username: userData.username, // Replace with dynamic username if needed
-        });
-
-        console.log(response.data); // Check what data is being returned
-        setCoins(response.data); // Assuming response.data contains the coins object
-      } catch (error) {
-        console.error('Error collecting coins:', error.response ? error.response.data.message : error.message);
-        setError(error.response ? error.response.data.message : error.message);
-      }
-    };
-
-    fetchCoins(); // Call the async function
-
-  }, [userData]); // The effect will run whenever userData changes
+    fetchCoins();
+  }, [userData, isCoinsUpdated]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -212,22 +210,23 @@ const Home = () => {
     setTimeLeft(cooldownDuration);
     setIsPlaying(false); // Stop animation
 
-    if (!userData) return; // Early return if userData is not defined
+    if (!userData) return;
 
     try {
       const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/saveCoins", {
-        username: userData.username,  // Send username instead of userId
-        coins: 14400,                 // Coins generated after farming
+        username: userData.username,
+        coins: 14400,
       });
 
-      const { coins } = response.data; // Destructure the coins from the response data
-      console.log('Coins collected successfully:', coins);
+      console.log('Coins collected successfully:', response.data.coins);
 
-      // Optionally, update the UI with the new coin balance, if needed
+      // Trigger coin fetch after successful collection
+      setIsCoinsUpdated(prev => !prev); // Toggle the state to trigger useEffect to refresh coins
     } catch (error) {
       console.error('Error collecting coins:', error.response?.data?.message || error.message);
     }
   };
+
 
   const getWaterWidth = () => {
     if (farming) {
