@@ -268,7 +268,7 @@ const Home = () => {
 
               </div>
               <div className="flex-1 flex justify-center">
-                <img src={giPic} alt="Header" className="w-18 h-18 object-cover rounded-full shadow-md" />
+                <img src={giPic} alt="Header" className="w-17 h-17 object-cover rounded-full shadow-md" />
               </div>
               <div className="flex-1 flex justify-end">
                 <button onClick={handleOpenPopup} className="bg-navy text-white px-4 py-2 rounded-full transition duration-200">
@@ -285,13 +285,13 @@ const Home = () => {
 
             {/* {referralCode && <p className="text-xl, text-yellow">Referred by: {referralCode}</p>} */}
 
-            <h1 className="text-xl font-bold mb-6">Hello, {userData.username}</h1>
+            <h1 className="text-xl font-bold mb-4">Hello, {userData.username}</h1>
 
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold">GI Points</h2>
               {coins && (
                 <div>
-                  <p className="text-2xl font-bold text-yellow">{coins.coins}</p> {/* Adjust this according to the structure of the API response */}
+                  <p className="text-3xl font-bold text-yellow">{coins.coins}</p> {/* Adjust this according to the structure of the API response */}
                 </div>
               )}
             </div>
