@@ -74,13 +74,15 @@ const Airdrop = () => {
 
   const handleCopyLink = () => {
     if (referralLink) {
-      // const message = encodeURIComponent(`Hey! Use my referral code to join: ${referralLink}`);
-      navigator.clipboard.writeText(referralLink)
+      const fullLink = `https://t.me/gi_bubble_blaster_bot`;
+      const message = `Join using my referral link: ${fullLink} and use the referral code: ${referralLink}`;
+
+      navigator.clipboard.writeText(message)
         .then(() => {
-          alert('Referral link copied to clipboard!');
+          alert('Referral link and code copied to clipboard!');
         })
         .catch((error) => {
-          console.error('Error copying referral link:', error);
+          console.error('Error copying referral link and code:', error);
         });
     } else {
       console.error('No referral link to copy');
