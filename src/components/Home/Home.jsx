@@ -309,7 +309,7 @@ const Home = () => {
                   height: '50px',
                   border: '2px solid #000',
                   borderRadius: '25px',
-                  backgroundColor: '#f0f0f0',
+                  backgroundColor: '#FFFFFF',
                   overflow: 'hidden',
                 }}
               >
