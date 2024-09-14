@@ -285,10 +285,10 @@ const Home = () => {
 
             {/* {referralCode && <p className="text-xl, text-yellow">Referred by: {referralCode}</p>} */}
 
-            <h1 className="text-xl font-bold mb-4">Hello, {userData.username}</h1>
+            <h1 className="text-xl font-bold mb-4 text-white">Hello, {userData.username}</h1>
 
             <div className="text-center mb-6">
-              <h2 className="text-xl font-semibold">GI Points</h2>
+              <h2 className="text-xl font-semibold text-mud">GI Points</h2>
               {coins && (
                 <div>
                   <p className="text-3xl font-bold text-yellow">{coins.coins}</p> {/* Adjust this according to the structure of the API response */}

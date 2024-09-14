@@ -24,6 +24,7 @@ export default {
         metal:'#A9ACB6',
         silver:'#c2c2c2',
         orange:'#ffa701',
+        mud: '#e3f542',
       },
     },
   },
