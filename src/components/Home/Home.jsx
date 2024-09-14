@@ -268,7 +268,7 @@ const Home = () => {
 
               </div>
               <div className="flex-1 flex justify-center">
-                <img src={giPic} alt="Header" className="w-16 h-16 object-cover rounded-full shadow-md" />
+                <img src={giPic} alt="Header" className="w-18 h-18 object-cover rounded-full shadow-md" />
               </div>
               <div className="flex-1 flex justify-end">
                 <button onClick={handleOpenPopup} className="bg-navy text-white px-4 py-2 rounded-full transition duration-200">
