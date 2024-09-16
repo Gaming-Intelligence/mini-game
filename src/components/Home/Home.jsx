@@ -77,6 +77,12 @@ const Home = () => {
   }, [WebApp.initDataUnsafe.user]);
 
 
+  const handleClearStorage = () => {
+    localStorage.clear(); // Or use clearGameData() to only clear specific items
+    alert('Game data cleared!');
+  };
+
+
 
   const fetchCoins = async () => {
     if (!userData) return; // Exit if userData is not available
@@ -353,6 +359,16 @@ const Home = () => {
               </div>
 
             </div>
+          </div>
+
+          <div>
+            {/* Other components */}
+            <button
+              className="bg-red-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+              onClick={handleClearStorage}
+            >
+              Clear Game Data
+            </button>
           </div>
         </>
       ) : (
