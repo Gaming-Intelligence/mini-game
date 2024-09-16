@@ -68,7 +68,7 @@ const RegisterPage = () => {
             <h1 className='mb-10 text-3xl'>Register Page</h1>
 
             {/* Only render the user data if it's available */}
-            <div className='rounded-lg shadow-lg shadow-mud p-5 mt-6'>
+            <div className='shadow-lg rounded-xl shadow-mud p-5 justify-center items-center'>
             {userData && (
                 <>
                     <div>
@@ -86,7 +86,7 @@ const RegisterPage = () => {
             <div>
                 <label className='text-xl font-bold mb-10 pr-4'>Referrer Code:</label>
                 </div>
-                <div>
+                <div className='mt-5'>
                 <input
                     className='text-xl font-bold mb-10 p-3 rounded-lg'
                     type="text"
