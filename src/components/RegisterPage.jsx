@@ -68,7 +68,7 @@ const RegisterPage = () => {
             <h1 className='mb-10 text-3xl'>Register Page</h1>
 
             {/* Only render the user data if it's available */}
-            <div className='rounded-lg, shadow-md shadow-mud'>
+            <div className='rounded-lg shadow-lg shadow-mud p-5 mt-6'>
             {userData && (
                 <>
                     <div>
