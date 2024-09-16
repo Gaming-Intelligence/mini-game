@@ -53,7 +53,7 @@ const Airdrop = () => {
 
   const handleShare = (platform) => {
     const fullLink = `https://t.me/gi_bubble_blaster_bot`;
-    const message = `Join using my referral link: ${fullLink} and use the referral code: ${referralLink}`;
+    const message = `Join using my referral link: ${fullLink}`;
     
     switch (platform) {
       case 'telegram':
@@ -97,6 +97,17 @@ const Airdrop = () => {
         <h1 className="text-2xl font-bold p-4">Invite Friends!</h1>
         <h3 className="text-xl p-8">Invite Friends And Earn More</h3>
 
+        <div className='flex items-center space-x-4 mb-6'>
+
+          {/* Copy Link Button */}
+          <button
+            className="bg-green-500 text-white flex-grow font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 w-16 h-12 flex justify-center items-center"
+            onClick={handleCopyLink}
+          >
+            Copy Referral Code
+          </button>
+        </div>
+
         <div className="flex items-center space-x-4">
           {/* Invite Friends Button */}
           <button
@@ -105,15 +116,8 @@ const Airdrop = () => {
           >
             Invite Friends
           </button>
-
-          {/* Copy Link Button */}
-          <button
-            className="bg-green-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 w-16 h-12 flex justify-center items-center"
-            onClick={handleCopyLink}
-          >
-            Copy
-          </button>
-        </div>
+          </div>
+          
 
         {/* Share Options Dropdown */}
         {showShareOptions && (

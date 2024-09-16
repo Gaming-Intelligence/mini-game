@@ -87,7 +87,7 @@ const RegisterPage = () => {
                 <input
                     className='text-xl font-bold mb-10'
                     type="text"
-                    placeholder="Enter the code"
+                    placeholder="  Enter the referral code"
                     onChange={handleInputChange} // Update referrerCode state when changed
                 />
             </div>
