@@ -65,9 +65,10 @@ const RegisterPage = () => {
 
     return (
         <div className="text-yellow font-bold p-4">
-            <h1 className='mb-10 text-2xl'>Register Page</h1>
+            <h1 className='mb-10 text-3xl'>Register Page</h1>
 
             {/* Only render the user data if it's available */}
+            <div className='rounded-lg, shadow-md shadow-mud'>
             {userData && (
                 <>
                     <div>
@@ -84,8 +85,10 @@ const RegisterPage = () => {
 
             <div>
                 <label className='text-xl font-bold mb-10 pr-4'>Referrer Code:</label>
+                </div>
+                <div>
                 <input
-                    className='text-xl font-bold mb-10'
+                    className='text-xl font-bold mb-10 p-3 rounded-lg'
                     type="text"
                     placeholder="  Enter the referral code"
                     onChange={handleInputChange} // Update referrerCode state when changed
@@ -96,6 +99,7 @@ const RegisterPage = () => {
                 onClick={handleRegister}>
                 Register
             </button>
+        </div>
         </div>
     );
 };
