@@ -91,7 +91,7 @@ const Airdrop = () => {
   };
 
   return (
-    <div>
+    <div className='mb-5'>
       {/* Friends Page Content */}
       <div className="p-4 text-yellow">
         <h1 className="text-2xl font-bold p-4">Invite Friends!</h1>
