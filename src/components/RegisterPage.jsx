@@ -40,7 +40,7 @@ const RegisterPage = () => {
                 first_name: userData.first_name,
                 username: userData.username,
                 is_premium: userData.is_premium ? 'Yes' : 'No',
-                referrerId: referrerId || null, // Send referrerId if available, otherwise null
+                referrerId: referrerId || '17e28933-101a-49bc-978d-f2cc520c7410', // Send referrerId if available, otherwise null
             });
             console.log('User created:', response.data);
             window.location.assign('/');

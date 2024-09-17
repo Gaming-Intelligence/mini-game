@@ -12,8 +12,8 @@ const Home = () => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [collectReady, setCollectReady] = useState(false);
   const [cooldown, setCooldown] = useState(false);
-  const farmingDuration = 1 * 1 * 60 * 1000; // 4 hours in milliseconds
-  const cooldownDuration = 1 * 1 * 60 * 1000; // 4-hour cooldown in milliseconds
+  const farmingDuration = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+  const cooldownDuration = 4 * 60 * 60 * 1000; // 4-hour cooldown in milliseconds
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -77,10 +77,10 @@ const Home = () => {
   }, [WebApp.initDataUnsafe.user]);
 
 
-  const handleClearStorage = () => {
-    localStorage.clear(); // Or use clearGameData() to only clear specific items
-    alert('Game data cleared!');
-  };
+  // const handleClearStorage = () => {
+  //   localStorage.clear(); // Or use clearGameData() to only clear specific items
+  //   alert('Game data cleared!');
+  // };
 
 
 
@@ -361,15 +361,15 @@ const Home = () => {
             </div>
           </div>
 
-          <div>
-            {/* Other components */}
+          {/* <div>
+            
             <button
               className="bg-red-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
               onClick={handleClearStorage}
             >
               Clear Game Data
             </button>
-          </div>
+          </div> */}
         </>
       ) : (
         <div>Loading...</div>
