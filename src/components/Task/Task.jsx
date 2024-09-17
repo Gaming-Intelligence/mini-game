@@ -53,7 +53,7 @@ const Task = () => {
     }
 
     try {
-      const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveTask', {
+      const response = await axios.post('https://game-backend-api.onrender.com/api/user/saveTask', {
         username: userData.username,
         taskName: task.taskName,
       });

@@ -50,7 +50,7 @@ const Game = () => {
         
 
         try {
-            const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveCoins', {
+            const response = await axios.post('https://game-backend-api.onrender.com/api/user/saveCoins', {
                 username: userData.username,
                 coins: score,
             });

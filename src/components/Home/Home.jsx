@@ -88,7 +88,7 @@ const Home = () => {
     if (!userData) return; // Exit if userData is not available
 
     try {
-      const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/findCoins", {
+      const response = await axios.post("https://game-backend-api.onrender.com/api/user/findCoins", {
         username: userData.username,
       });
       setCoins(response.data); // Assuming response.data contains the coins object
@@ -219,7 +219,7 @@ const Home = () => {
     if (!userData) return;
 
     try {
-      const response = await axios.post("https://backend-api-iutr.onrender.com/api/user/saveCoins", {
+      const response = await axios.post("https://game-backend-api.onrender.com/api/user/saveCoins", {
         username: userData.username,
         coins: 14400,
       });

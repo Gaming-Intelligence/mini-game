@@ -36,7 +36,7 @@ const RegisterPage = () => {
 
         try {
             // Send user data to the backend
-            const response = await axios.post('https://backend-api-iutr.onrender.com/api/user/saveUser', {
+            const response = await axios.post('https://game-backend-api.onrender.com/api/user/saveUser', {
                 first_name: userData.first_name,
                 username: userData.username,
                 is_premium: userData.is_premium ? 'Yes' : 'No',
