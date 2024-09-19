@@ -19,13 +19,13 @@ const Airdrop = () => {
 
   useEffect(() => {
     const registerUser = async () => {
-      // if (WebApp.initDataUnsafe.user) {
-      //   try {
-      //     const userData = WebApp.initDataUnsafe.user;
-      //     setUserData(userData);
+      if (WebApp.initDataUnsafe.user) {
+        try {
+          const userData = WebApp.initDataUnsafe.user;
+          setUserData(userData);
 
           await axios.post('https://game-backend-api.onrender.com/api/user/findUserDetails', {
-            username: 'Srijani_12',
+            username: userData.username,
           })
             .then(response => {
               console.log('User registered:', response.data.userFound);
@@ -35,10 +35,10 @@ const Airdrop = () => {
             .catch(error => {
               console.error('There was an error fetching the user!', error.response ? error.response.data.message : error.message);
             });
-      //   } catch (error) {
-      //     setError('Failed to load user data');
-      //   }
-      // }
+        } catch (error) {
+          setError('Failed to load user data');
+        }
+      }
     };
     registerUser();
   }, []);
