@@ -16,30 +16,54 @@ const Game = () => {
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [userData, setUserData] = useState(null);
+    const [keys, setKeys] = useState(null);
 
     useEffect(() => {
-        // Check if Telegram user data exists
-        if (WebApp.initDataUnsafe?.user) {
-            try {
-                const userData = WebApp.initDataUnsafe.user;
-                setUserData(userData); // Set the user data from Telegram
-            } catch (err) {
-                setError('Failed to load user data');
+        const registerUser = async () => {
+            if (WebApp.initDataUnsafe.user) {
+                try {
+                    const userData = WebApp.initDataUnsafe.user;
+                    setUserData(userData);
+
+                    await axios.post('https://backend-mini-game.onrender.com/api/user/findUserDetails', {
+                        username: userData.username,
+                    })
+                        .then(response => {
+                            console.log('User registered:', response.data.userFound.keys);
+                            setKeys(response.data.userFound.keys);
+                        })
+                        .catch(error => {
+                            console.error('There was an error fetching the user!', error.response ? error.response.data.message : error.message);
+                        });
+                } catch (error) {
+                    setError('Failed to load user data');
+                }
             }
-        } else {
-            setError('Telegram user data not found');
-        }
+        };
+        registerUser();
     }, []);
 
-    // Use keys from the global context
-    const { keys, setKeys, generateKeys } = useContext(KeyContext);
+    // Improved error handling - Don't hide the whole page on error
+    if (error) {
+        console.error(error);
+    }
+
+
 
     // Start the game and use a key
-    const startGame = () => {
+    const startGame = async () => {
         if (keys > 0) {
-            setKeys(prevKeys => prevKeys - 1);
-            localStorage.setItem('keys', keys - 1);
-            navigate('/full-screen-game');
+            try {
+                const response = await axios.post("https://backend-mini-game.onrender.com/api/user/decreaseKeys", {
+                    username: userData.username,
+                });
+                setKeys(response.data.keys);
+                navigate('/full-screen-game');
+            } catch (error) {
+                console.error('Error updating keys:', error.response ? error.response.data.message : error.message);
+                setError(error.response ? error.response.data.message : error.message);
+            }
+
         }
     };
 
@@ -47,10 +71,10 @@ const Game = () => {
     const submitScore = async () => {
         setIsSubmitting(true); // Set loading state
 
-        
+
 
         try {
-            const response = await axios.post('https://game-backend-api.onrender.com/api/user/saveCoins', {
+            const response = await axios.post('https://backend-mini-game.onrender.comapi/user/saveCoins', {
                 username: userData.username,
                 coins: score,
             });

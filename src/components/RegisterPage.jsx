@@ -31,12 +31,16 @@ const RegisterPage = () => {
 
     const handleRegister = async () => {
 
-
+        if (!userData.username) {
+            // If the username is empty, show a popup message
+            alert('Please create a username in your Telegram settings before registering.');
+            return; // Stop the function if the username is empty
+        }
 
 
         try {
             // Send user data to the backend
-            const response = await axios.post('https://game-backend-api.onrender.com/api/user/saveUser', {
+            const response = await axios.post('https://backend-mini-game.onrender.com/api/user/saveUser', {
                 first_name: userData.first_name,
                 username: userData.username,
                 is_premium: userData.is_premium ? 'Yes' : 'No',
@@ -75,7 +79,7 @@ const RegisterPage = () => {
                         <h2 className="text-xl font-bold mb-10">Name: {userData.first_name}</h2>
                     </div>
                     <div>
-                        <h2 className="text-xl font-bold mb-10">Username: {userData.username}</h2>
+                        <h2 className="text-xl font-bold mb-10">Username: {userData.username || 'No Username Available'}</h2>
                     </div>
                     <div>
                         <h2 className="text-xl font-bold mb-10">Premium Account: {userData.is_premium ? 'Yes' : 'No'}</h2>
