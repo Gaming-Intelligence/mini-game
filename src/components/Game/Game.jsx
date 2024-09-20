@@ -25,7 +25,7 @@ const Game = () => {
                     const userData = WebApp.initDataUnsafe.user;
                     setUserData(userData);
 
-                    await axios.post('https://backend-mini-game.onrender.com/api/user/findUserDetails', {
+                    await axios.post('https://game-backend-api.onrender.com/api/user/findUserDetails', {
                         username: userData.username,
                     })
                         .then(response => {
@@ -54,7 +54,7 @@ const Game = () => {
     const startGame = async () => {
         if (keys > 0) {
             try {
-                const response = await axios.post("https://backend-mini-game.onrender.com/api/user/decreaseKeys", {
+                const response = await axios.post("https://game-backend-api.onrender.com/api/user/decreaseKeys", {
                     username: userData.username,
                 });
                 setKeys(response.data.keys);
@@ -74,7 +74,7 @@ const Game = () => {
 
 
         try {
-            const response = await axios.post('https://backend-mini-game.onrender.comapi/user/saveCoins', {
+            const response = await axios.post('https://game-backend-api.onrender.com/api/user/saveCoins', {
                 username: userData.username,
                 coins: score,
             });
