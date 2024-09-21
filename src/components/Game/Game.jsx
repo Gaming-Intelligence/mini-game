@@ -118,7 +118,7 @@ const Game = () => {
                         <div className="mt-6">
                             <button
                                 onClick={submitScore}
-                                className={`bg-green-500 text-green px-8 py-2 rounded-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                className={`bg-green text-white px-8 py-2 rounded-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 disabled={isSubmitting} // Disable button when submitting
                             >
                                 {isSubmitting ? 'Submitting...' : 'Submit Score'}

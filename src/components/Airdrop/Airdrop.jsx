@@ -114,7 +114,7 @@ const Airdrop = () => {
 
           {/* Copy Link Button */}
           <button
-            className="bg-green-500 text-white flex-grow font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 w-16 h-12 flex justify-center items-center"
+            className="bg-green text-white flex-grow font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 w-16 h-12 flex justify-center items-center"
             onClick={handleCopyLink}
           >
             Copy Referral Code
@@ -147,7 +147,7 @@ const Airdrop = () => {
               </li>
               <li>
                 <button
-                  className="bg-green-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg w-full"
+                  className="bg-green text-white font-bold py-2 px-4 rounded-lg shadow-lg w-full"
                   onClick={() => handleShare('whatsapp')}
                 >
                   WhatsApp
