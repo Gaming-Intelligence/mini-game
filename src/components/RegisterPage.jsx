@@ -33,7 +33,7 @@ const RegisterPage = () => {
 
         if (!userData.username) {
             // If the username is empty, show a popup message
-            alert('Please create a username in your Telegram settings before registering.');
+            WebApp.showAlert('Please create a username in your Telegram settings before registering.');
             return; // Stop the function if the username is empty
         }
 
@@ -68,42 +68,51 @@ const RegisterPage = () => {
     }
 
     return (
-        <div className="text-mud font-bold p-4">
-            <h1 className='mb-10 text-3xl text-blue-400'>Register Page</h1>
+        <div className="text-blue-500 font-bold p-4">
+            <h1 className='mb-10 text-3xl text-dark_blue'>Register Page</h1>
 
             {/* Only render the user data if it's available */}
             <div className='shadow-lg rounded-xl shadow-mud p-5 justify-center items-center mt-2'>
-            {userData && (
-                <>
-                    <div>
-                        <h2 className="text-xl font-bold mb-10">Name: {userData.first_name}</h2>
-                    </div>
-                    <div>
-                        <h2 className="text-xl font-bold mb-10">Username: {userData.username || 'No Username Available'}</h2>
-                    </div>
-                    <div>
-                        <h2 className="text-xl font-bold mb-10">Premium Account: {userData.is_premium ? 'Yes' : 'No'}</h2>
-                    </div>
-                </>
-            )}
+                {userData && (
+                    <>
+                        <div>
+                            <h2 className="text-xl font-bold mb-10">
+                                Name: <span className="text-green font-normal">{userData.first_name}</span>
+                            </h2>
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-bold mb-10">
+                                Username: <span
+                                    className={userData.username ? "text-green font-normal" : "text-red font-normal"}>
+                                    {userData.username || 'No Username Available'}
+                                </span>
+                            </h2>
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-bold mb-10">
+                                Premium Account: <span className="text-green font-normal">{userData.is_premium ? 'Yes' : 'No'}</span>
+                            </h2>
+                        </div>
+                    </>
+                )}
 
-            <div>
-                <label className='text-xl font-bold mb-10 pr-4'>Referrer Code:</label>
+                <div>
+                    <label className='text-xl font-bold mb-10 pr-4'>Referrer Code:</label>
                 </div>
                 <div className='mt-5'>
-                <input
-                    className='text-xl font-bold mb-10 p-3 rounded-lg'
-                    type="text"
-                    placeholder="  Enter the referral code"
-                    onChange={handleInputChange} // Update referrerCode state when changed
-                />
+                    <input
+                        className='text-xl font-bold mb-10 p-3 rounded-lg text-black'
+                        type="text"
+                        placeholder="  Enter the referral code"
+                        onChange={handleInputChange} // Update referrerCode state when changed
+                    />
+                </div>
+                <button
+                    className="flex-grow bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg"
+                    onClick={handleRegister}>
+                    Register
+                </button>
             </div>
-            <button
-                className="flex-grow bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg"
-                onClick={handleRegister}>
-                Register
-            </button>
-        </div>
         </div>
     );
 };
