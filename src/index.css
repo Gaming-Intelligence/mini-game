@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 body {
-    background-color: white !important;
+    background-color: white;
     color: black;
     background-image: url('./assets/background4.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    -webkit-background-size: cover; /* For iOS */
+    -webkit-background-position: center; /* For iOS */
 }
-
-
 
 html,
 body {
@@ -19,12 +19,9 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    /* Prevent horizontal scrolling */
     touch-action: manipulation;
-    /* Prevent unwanted actions */
-    position: fixed;
-    /* Keeps the body fixed in place */
     width: 100%;
+    position: relative; /* Change this from fixed to relative */
 }
 
 #root {
