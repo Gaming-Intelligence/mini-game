@@ -28,51 +28,84 @@ const Task = () => {
   ];
 
   // Save user data if available
-  useEffect(() => {
-    if (WebApp.initDataUnsafe?.user) {
-      try {
-        const userData = WebApp.initDataUnsafe.user;
-        setUserData(userData); // Set the user data from Telegram
-      } catch (err) {
-        setError('Failed to load user data');
-      }
-    } else {
-      setError('Telegram user data not found');
-    }
-  }, []);
-
-  // Load completed tasks from localStorage on component mount
   // useEffect(() => {
-  //   const savedTasks = localStorage.getItem('completedTasks');
-  //   if (savedTasks) {
-  //     setCompletedTasks(JSON.parse(savedTasks)); // Parse and set the tasks from localStorage
+  //   if (WebApp.initDataUnsafe?.user) {
+  //     try {
+  //       const userData = WebApp.initDataUnsafe.user;
+  //       setUserData(userData); // Set the user data from Telegram
+  //     } catch (err) {
+  //       setError('Failed to load user data');
+  //     }
+  //   } else {
+  //     setError('Telegram user data not found');
   //   }
+  // }, []);
+
+  // // Load completed tasks from localStorage on component mount
+  // // useEffect(() => {
+  // //   const savedTasks = localStorage.getItem('completedTasks');
+  // //   if (savedTasks) {
+  // //     setCompletedTasks(JSON.parse(savedTasks)); // Parse and set the tasks from localStorage
+  // //   }
+  // // }, []);
+
+
+  // useEffect(() => {
+  //   fetchTaskNames();
   // }, []);
 
 
   useEffect(() => {
+    const fetchTaskNames = async () => {
+      if (WebApp.initDataUnsafe.user) {
+        try {
+          const userData = WebApp.initDataUnsafe.user;
+          setUserData(userData);
+
+          await axios.post('https://game-backend-api.onrender.com/api/user/findUserDetails', {
+            username: userData.username,
+          })
+            .then(response => {
+              console.log('User registered:', response.data.userFound);
+              setTaskNames(response.data.userFound.taskName);
+
+              if (response.data.userFound.lastUsedCode) {
+                setCodeSaved(true);
+              } else {
+                setCodeSaved(false);
+              }
+
+            })
+            .catch(error => {
+              console.error('There was an error fetching the data!', error.response ? error.response.data.message : error.message);
+            });
+        } catch (error) {
+          setError('Failed to load user data');
+        }
+      }
+    };
     fetchTaskNames();
   }, []);
 
 
 
-  const fetchTaskNames = async () => {
-    try {
-      const response = await axios.post('https://game-backend-api.onrender.com/api/user/findUserDetails', {
-        username: userData.username,
-      });
-      const taskNames = response.data.userFound.taskName;
-      console.log(taskNames);
-      setTaskNames(taskNames);
-      if (response.data.userFound.lastUsedCode) {
-        setCodeSaved(true);
-      } else {
-        setCodeSaved(false);
-      }
-    } catch (error) {
-      console.error('Error fetching task names:', error);
-    }
-  };
+  // const fetchTaskNames = async () => {
+  //   try {
+  //     const response = await axios.post('https://game-backend-api.onrender.com/api/user/findUserDetails', {
+  //       username: userData.username,
+  //     });
+  //     const taskNames = response.data.userFound.taskName;
+  //     console.log(taskNames);
+  //     setTaskNames(taskNames);
+  //     if (response.data.userFound.lastUsedCode) {
+  //       setCodeSaved(true);
+  //     } else {
+  //       setCodeSaved(false);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching task names:', error);
+  //   }
+  // };
 
 
   const fetchVideoLink = async () => {
