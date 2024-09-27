@@ -4,9 +4,8 @@ import Lottie from "react-lottie";
 import { useNavigate, useLocation } from 'react-router-dom';
 import key from '/src/assets/keys.png';
 import gameIcon from '/src/assets/game_start.png';
-import { KeyContext } from '../KeyContext'; // Import KeyContext
 import animationData from '/src/assets/game_over_animation.json';
-import axios from 'axios'; // Import axios for API calls
+import axios from 'axios';
 import WebApp from '@twa-dev/sdk';
 
 const Game = () => {

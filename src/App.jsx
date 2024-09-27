@@ -10,7 +10,6 @@ import Upgrade from './components/Upgrade/Upgrade';
 import Layout from './components/Layout';
 // import Friends from './components/Friends/Friends';
 import SplashScreen from './components/SplashScreen/SplashScreen';
-import { KeyProvider } from './components/KeyContext';
 import RegisterPage from './components/RegisterPage';
 import axios from 'axios';
 import WebApp from '@twa-dev/sdk';
@@ -65,7 +64,7 @@ function App() {
 
 
   return (
-    <KeyProvider>
+    
       <Router>
         {loading ? (
           <SplashScreen />
@@ -87,7 +86,7 @@ function App() {
           )
         )}
       </Router>
-    </KeyProvider>
+    
   );
 }
 
