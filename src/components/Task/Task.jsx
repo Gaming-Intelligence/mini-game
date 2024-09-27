@@ -122,11 +122,7 @@ const Task = () => {
         setTimeout(() => {
           window.open(task.link, "_blank");
         }, 500);
-
-        // Refresh the page after the task is completed
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        
       } else {
         WebApp.showAlert(response.data.message);
       }
