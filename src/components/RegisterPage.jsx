@@ -69,10 +69,10 @@ const RegisterPage = () => {
 
     return (
         <div className="text-blue-500 font-bold p-4">
-            <h1 className='mb-10 text-3xl text-dark_blue'>Register Page</h1>
+            <h1 className='mb-10 text-3xl text-dark_blue'>GI under monthly maintainance! Stay Tuned</h1>
 
             {/* Only render the user data if it's available */}
-            <div className='shadow-lg rounded-xl shadow-mud p-5 justify-center items-center mt-2'>
+            {/* <div className='shadow-lg rounded-xl shadow-mud p-5 justify-center items-center mt-2'>
                 {userData && (
                     <>
                         <div>
@@ -104,7 +104,7 @@ const RegisterPage = () => {
                         className='text-xl font-bold mb-10 p-3 rounded-lg text-black'
                         type="text"
                         placeholder="  Enter the referral code"
-                        onChange={handleInputChange} // Update referrerCode state when changed
+                        onChange={handleInputChange}
                     />
                 </div>
                 <button
@@ -112,7 +112,7 @@ const RegisterPage = () => {
                     onClick={handleRegister}>
                     Register
                 </button>
-            </div>
+            </div> */}
         </div>
     );
 };
