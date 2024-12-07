@@ -42,7 +42,7 @@ function App() {
           const userData = WebApp.initDataUnsafe.user;
           setUserData(userData);
 
-          await axios.post('https://game-backend-api.onrender.com/api/user/findUser', {
+          await axios.post('https://www.api.gamingintelligence.io/api/user/findUser', {
             username: userData.username,
           })
             .then(response => {

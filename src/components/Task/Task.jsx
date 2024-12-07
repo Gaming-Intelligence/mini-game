@@ -54,7 +54,7 @@ const Task = () => {
 
       await axios
         .post(
-          "https://game-backend-api.onrender.com/api/user/findUserDetails",
+          "https://www.api.gamingintelligence.io/api/user/findUserDetails",
           {
             username: userData.username,
           }
@@ -86,7 +86,7 @@ const Task = () => {
   const fetchVideoLink = async () => {
     try {
       const response = await axios.get(
-        "https://game-backend-api.onrender.com/api/user/getVideoLink"
+        "https://www.api.gamingintelligence.io/api/user/getVideoLink"
       );
       console.log(response.data.videoDocument.link);
       setVideoLink(response.data.videoDocument.link);
@@ -106,7 +106,7 @@ const Task = () => {
 
     try {
       const response = await axios.post(
-        "https://game-backend-api.onrender.com/api/user/saveTask",
+        "https://www.api.gamingintelligence.io/api/user/saveTask",
         {
           username: userData.username,
           taskName: task.taskName,
@@ -160,7 +160,7 @@ const Task = () => {
 
     try {
       const response = await axios.post(
-        "https://game-backend-api.onrender.com/api/user/verifyYoutubeVideoCode",
+        "https://www.api.gamingintelligence.io/api/user/verifyYoutubeVideoCode",
         {
           username: userData.username,
           code: code,
@@ -177,7 +177,7 @@ const Task = () => {
         const fetchTaskNamesAfterSubmit = async () => {
           try {
             const response = await axios.post(
-              "https://game-backend-api.onrender.com/api/user/findUserDetails",
+              "https://www.api.gamingintelligence.io/api/user/findUserDetails",
               { username: userData.username }
             );
             console.log("User registered:", response.data.userFound);

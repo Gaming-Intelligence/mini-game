@@ -24,7 +24,7 @@ const Airdrop = () => {
           const userData = WebApp.initDataUnsafe.user;
           setUserData(userData);
 
-          await axios.post('https://game-backend-api.onrender.com/api/user/findUserDetails', {
+          await axios.post('https://www.api.gamingintelligence.io/api/user/findUserDetails', {
             username: userData.username,
           })
             .then(response => {
